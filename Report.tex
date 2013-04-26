@@ -2,8 +2,10 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{setspace}
+\onehalfspacing
 
-\title{An Overview of Adversarial Searching}
+\title{AI: An Overview of Uninformed Searching and Applications}
 \author{Dylan Thompson \and Michael M. Wright}
 
 \begin{document}
@@ -12,8 +14,52 @@
 \tableofcontents
 
 \begin{abstract}
+This paper begins with a broad overview of uninformed search algorithms in the 
+field of Artificial Intelligence.  While search is useful for a variety of toy 
+problems such as the Wolf-Goat-Cabbage problem and the Missionaries and
+Cannibals problem, this paper will discuss some of the real-world problems
+for which uninformed searching is an acceptable solution.  The paper will then 
+analyze some of the different search algorithms as they relate to solving a 
+Rubik's cube.
+
+\textbf{Don't forget to add your conclusions!}
+
 \end{abstract}
 
-\chapter{Introduction to Adversarial Searching}
+\chapter{Searching}
+A small portion of solvable problems can be modeled in computers simply by
+mapping the entire set of conditions to corresponding actions.  However, for
+some problems this mapping is impractical if not impossible given the
+constraints of our current technology.  In situations like these it becomes
+imperative to build a \textbf{goal-based} agent.  Goal-based agents can, in
+effect, consider future actions and evaluate the effect of those future
+actions on reaching the desired solution.\cite[p.~64]{norvig}  The two main
+subfields of goal-based agents are search and planning.\cite{wikiAgent} The
+field of searching can be further whittled down into those algorithms that
+utilize uninformed algorithms and those that utilize informed algorithms.
+Later in the chapter we will look at the uninformed searching algorithms in
+use today.  First, however, we must consider the criteria a problem must meet
+before we can use a search agent to solve that problem.  It turns out that a
+problem needs to be \textbf{well-defined} prior to unleashing a searching
+agent to solve the problem.
+
+\section{Defining the Problem}
+
+
+\begin{thebibliography}{9}
+
+  \bibitem{norvig}
+    Stuart Russel and Peter Norvig,
+    \textit{Artificial Intelligence: A Modern Approach}.
+    Prentice Hall, Upper Saddle River,
+    3rd Edition,
+    2010.
+
+  \bibitem{wikiAgent}
+    Intelligent Agent. 21 April, 2013.  
+    In \textit{Wikipedia}.  Retrieved April 25, 2013,
+    from http://en.wikipedia.org/wiki/intelligent\_agent
+
+\end{thebibliography}
 
 \end{document}
