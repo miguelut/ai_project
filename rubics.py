@@ -1,4 +1,4 @@
-
+import random
 
 
 #
@@ -50,24 +50,24 @@ Bottom = 5
 #
 
 def newSolvedCube():
-        C = [ [['b12','b','b'],
-               ['b11','b','b'],
-               ['b10','b','b']],
-              [['w','w','w'],
-               ['w','w','w'],
-               ['w','w','w']],
-              [['r','r','r'],
-               ['r','r','r'],
-               ['r9','r8','r7']],
-              [['o1','o2','o3'],
-               ['o','o','o'],
-               ['o','o','o']],
-              [['g','g','g4'],
-               ['g','g','g5'],
-               ['g','g','g6']],
-              [['y1','y2','y3'],
-               ['y8','y','y4'],
-               ['y7','y6','y5']]]
+        C = list([list([list([1,1,1]),
+                   list([1,1,1]),
+                   list([1,1,1])]),
+                  list([list([2,2,2]),
+                   list([2,2,2]),
+                   list([2,2,2])]),
+                  list([list([3,3,3]),
+                   list([3,3,3]),
+                   list([3,3,3])]),
+                  list([list([4,4,4]),
+                   list([4,4,4]),
+                   list([4,4,4])]),
+                  list([list([5,5,5]),
+                   list([5,5,5]),
+                   list([5,5,5])]),
+                  list([list([6,6,6]),
+                   list([6,6,6]),
+                   list([6,6,6])])])
 
         return C
               
@@ -117,7 +117,7 @@ def F(C):
         C[Bottom][2] = C[Left][2]
         C[Left][2] = oldtop
 
-def b(C):
+def ba(C):
         # Back Face Rotation - clock-wise
         C[Back] = list(zip(*((C[Back])[::-1])))
 
@@ -130,7 +130,7 @@ def b(C):
         C[Left][0] = oldtop
         
 
-def B(C):
+def BA(C):
         # Back Face Rotation - counter-clock-wise
         C[Back] = list(zip(*C[Back]))[::-1]
 
@@ -269,7 +269,7 @@ def T(C):
         C[Left][1][2] = oldback[1]
         C[Left][2][2] = oldback[0]
 
-def b(C):
+def bo(C):
          # Bottom Face Rotation - clock-wise
         C[Bottom] = list(zip(*C[Bottom]))[::-1]  # This must be flipped!
  
@@ -288,7 +288,7 @@ def b(C):
         C[Right][1][2] = oldback[1]
         C[Right][2][2] = oldback[2]
 
-def B(C):
+def BO(C):
          # Top Face Rotation - counter-clock-wise
         C[Bottom] = list(zip(*((C[Bottom])[::-1]))) # Flipp it !! because botom is reflected
 
@@ -306,14 +306,96 @@ def B(C):
         C[Left][0][0] = oldback[2]
         C[Left][1][0] = oldback[1]
         C[Left][2][0] = oldback[0]
+
+        
 #Centers
 # tb - Layer between top and bottom
-# lr - Layer betweem left and right (Cap upward, lower downward)
-# fb - Layer between front and back (Cap leftward, lower rightward)
+def tb(C):
+
+        # Rotate the layer between the top and bottom layer clock-kwise
+        oldback = list(C[Back][1])
+        
+        C[Back][1][0] = C[Left][2][1]
+        C[Back][1][1] = C[Left][1][1]
+        C[Back][1][2] = C[Left][0][1]
+        C[Left][0][1] = C[Front][1][0]
+        C[Left][1][1] = C[Front][1][1]
+        C[Left][2][1] = C[Front][1][2]
+        C[Front][1][0] = C[Right][2][1]
+        C[Front][1][1] = C[Right][1][1]
+        C[Front][1][2] = C[Right][0][1]
+        C[Right][0][1] = oldback[0]
+        C[Right][1][1] = oldback[1]
+        C[Right][2][1] = oldback[2]
+
+def TB(C):
+
+        # Rotate the layer between the top and bottom layer counter-clock-kwise
+        oldback = list(C[Back][1])
+        
+        C[Back][1][0] = C[Right][0][1]
+        C[Back][1][1] = C[Right][1][1]
+        C[Back][1][2] = C[Right][2][1]
+        C[Right][0][1] = C[Front][1][2]
+        C[Right][1][1] = C[Front][1][1]
+        C[Right][2][1] = C[Front][1][0]
+        C[Front][1][0] = C[Left][0][1]
+        C[Front][1][1] = C[Left][1][1]
+        C[Front][1][2] = C[Left][2][1]
+        C[Left][0][1] = oldback[2]
+        C[Left][1][1] = oldback[1]
+        C[Left][2][1] = oldback[0]
+
+def fb(C):
+    oldtop = list(C[Top][1])
+
+    C[Top][1] = C[Left][1]
+    C[Left][1] = C[Bottom][1]
+    C[Bottom][1] = C[Right][1]
+    C[Right][1] = oldtop
+
+def FB(C):
+    oldtop = list(C[Top][1])
+
+    C[Top][1] = C[Right][1]
+    C[Right][1] = C[Bottom][1]
+    C[Bottom][1] = C[Left][1]
+    C[Left][1] = oldtop
+    
+def lr(C):
+    oldfront = list([C[Front][0][1], C[Front][1][1], C[Front][2][1]])
+
+    C[Front][0][1] = C[Top][0][1]
+    C[Front][1][1] = C[Top][1][1]
+    C[Front][2][1] = C[Top][2][1]
+    C[Top][0][1] = C[Back][0][1]
+    C[Top][1][1] = C[Back][1][1]
+    C[Top][2][1] = C[Back][2][1]
+    C[Back][0][1] = C[Bottom][2][1]
+    C[Back][1][1] = C[Bottom][1][1]
+    C[Back][2][1] = C[Bottom][0][1]
+    C[Bottom][0][1] = oldfront[2]
+    C[Bottom][1][1] = oldfront[1]
+    C[Bottom][2][1] = oldfront[0]
+
+def LR(C):
+    oldfront = list([C[Front][0][1], C[Front][1][1], C[Front][2][1]])
+
+    C[Front][0][1] = C[Bottom][2][1]
+    C[Front][1][1] = C[Bottom][1][1]
+    C[Front][2][1] = C[Bottom][0][1]
+    C[Bottom][0][1] = C[Back][2][1]
+    C[Bottom][1][1] = C[Back][1][1]
+    C[Bottom][2][1] = C[Back][0][1]
+    C[Back][0][1] = C[Top][0][1]
+    C[Back][1][1] = C[Top][1][1]
+    C[Back][2][1] = C[Top][2][1]
+    C[Top][0][1] = oldfront[0]
+    C[Top][1][1] = oldfront[1]
+    C[Top][2][1] = oldfront[2]
 
 
-
-
+listOfAllOps = [f,F,ba,BA,t,T ,bo,BO,l,L ,r ,R ,lr ,LR,tb,TB,fb,FB]
 
 #
 # Cube Visualization
@@ -322,40 +404,90 @@ def B(C):
 
 
 def printCube(C):
-        print('            |' + C[Back][0][0] + '|' + C[Back][0][1] + '|' + C[Back][0][2] + '|')
-        print('            |' + C[Back][1][0] + '|' + C[Back][1][1] + '|' + C[Back][1][2] + '|')
-        print('            |' + C[Back][2][0] + '|' + C[Back][2][1] + '|' + C[Back][2][2] + '|\n')
+        print('            |' + str(C[Back][0][0]) + '|' + str(C[Back][0][1]) + '|' + str(C[Back][0][2]) + '|')
+        print('            |' + str(C[Back][1][0]) + '|' + str(C[Back][1][1]) + '|' + str(C[Back][1][2]) + '|')
+        print('            |' + str(C[Back][2][0]) + '|' + str(C[Back][2][1]) + '|' + str(C[Back][2][2]) + '|\n')
         
-        print(' |' + C[Left][0][0]   + '|' + C[Left][0][1]   + '|' + C[Left][0][2]   + '|   ' +
-              ' |' + C[Top][0][0]    + '|'  + C[Top][0][1]   + '|'  + C[Top][0][2]   + '|   ' +
-              ' |' + C[Right][0][0]  + '|' + C[Right][0][1]  + '|' + C[Right][0][2]  + '|   ' +
-              ' |' + C[Bottom][0][0] + '|' + C[Bottom][0][1] + '|' + C[Bottom][0][2] + '|   ' )
+        print(' |' + str(C[Left][0][0])   + '|' + str(C[Left][0][1])  + '|' + str(C[Left][0][2])   + '|   ' +
+              ' |' + str(C[Top][0][0])    + '|' + str(C[Top][0][1])   + '|'  + str(C[Top][0][2])   + '|   ' +
+              ' |' + str(C[Right][0][0])  + '|' + str(C[Right][0][1])  + '|' + str(C[Right][0][2])  + '|   ' +
+              ' |' + str(C[Bottom][0][0]) + '|' + str(C[Bottom][0][1]) + '|' + str(C[Bottom][0][2]) + '|   ' )
         
-        print(' |' + C[Left][1][0]   + '|' + C[Left][1][1]   + '|' + C[Left][1][2]   + '|   ' +
-              ' |' + C[Top][1][0]    + '|' + C[Top][1][1]    + '|' + C[Top][1][2]    + '|   ' +
-              ' |' + C[Right][1][0]  + '|' + C[Right][1][1]  + '|' + C[Right][1][2]  + '|   ' +
-              ' |' + C[Bottom][1][0] + '|' + C[Bottom][1][1] + '|' + C[Bottom][1][2] + '|   ' )
+        print(' |' + str(C[Left][1][0])   + '|' + str(C[Left][1][1])   + '|' + str(C[Left][1][2])   + '|   ' +
+              ' |' + str(C[Top][1][0])    + '|' + str(C[Top][1][1])    + '|' + str(C[Top][1][2])    + '|   ' +
+              ' |' + str(C[Right][1][0])  + '|' + str(C[Right][1][1])  + '|' + str(C[Right][1][2])  + '|   ' +
+              ' |' + str(C[Bottom][1][0]) + '|' + str(C[Bottom][1][1]) + '|' + str(C[Bottom][1][2]) + '|   ' )
 
-        print(' |' + C[Left][2][0]   + '|' + C[Left][2][1]   + '|' + C[Left][2][2]   + '|   ' +
-              ' |' + C[Top][2][0]    + '|' + C[Top][2][1]    + '|' + C[Top][2][2]    + '|   ' +
-              ' |' + C[Right][2][0]  + '|' + C[Right][2][1]  + '|' + C[Right][2][2]  + '|   ' +
-              ' |' + C[Bottom][2][0] + '|' + C[Bottom][2][1] + '|' + C[Bottom][2][2] + '| \n' )
+        print(' |' + str(C[Left][2][0])   + '|' + str(C[Left][2][1])   + '|' + str(C[Left][2][2])   + '|   ' +
+              ' |' + str(C[Top][2][0])    + '|' + str(C[Top][2][1])    + '|' + str(C[Top][2][2])    + '|   ' +
+              ' |' + str(C[Right][2][0])  + '|' + str(C[Right][2][1])  + '|' + str(C[Right][2][2])  + '|   ' +
+              ' |' + str(C[Bottom][2][0]) + '|' + str(C[Bottom][2][1]) + '|' + str(C[Bottom][2][2]) + '| \n' )
 
-        print('            |' + C[Front][0][0] + '|' + C[Front][0][1] + '|' + C[Front][0][2] + '|')
-        print('            |' + C[Front][1][0] + '|' + C[Front][1][1] + '|' + C[Front][1][2] + '|')
-        print('            |' + C[Front][2][0] + '|' + C[Front][2][1] + '|' + C[Front][2][2] + '|\n\n')
+        print('            |' + str(C[Front][0][0]) + '|' + str(C[Front][0][1]) + '|' + str(C[Front][0][2]) + '|')
+        print('            |' + str(C[Front][1][0]) + '|' + str(C[Front][1][1]) + '|' + str(C[Front][1][2]) + '|')
+        print('            |' + str(C[Front][2][0]) + '|' + str(C[Front][2][1]) + '|' + str(C[Front][2][2]) + '|\n\n')
 
 
+
+#
+# Scrambling and Operation Sequences
+#
+
+def genScrambleSeq(length):
+    scramSeq = []
+    for x in range(length):
+        scramSeq.append(random.randrange(0,18))
+    return scramSeq
+
+
+def applySeq(seq, cube):
+    #for n in seq:
+    listOfAllOps[0](cube)
+    listOfAllOps[1](cube)
+    listOfAllOps[2](cube)
+    listOfAllOps[3](cube)
+    #listOfAllOps[4](cube)
+    #listOfAllOps[5](cube)
+    #listOfAllOps[6](cube)
+    #listOfAllOps[7](cube)
+    #listOfAllOps[8](cube)
+    listOfAllOps[9](cube)
+    #listOfAllOps[10](cube)
+    #listOfAllOps[11](cube)
+    #listOfAllOps[12](cube)
+    #listOfAllOps[13](cube)
+    #listOfAllOps[14](cube)
+    #listOfAllOps[15](cube)
+    #listOfAllOps[16](cube)
+    #listOfAllOps[17](cube)
+
+#def getUndoSeq():
+
+
+#def newScrambledCube():
+
+def test(C):
+    f(C)
+    F(C)
+    ba(C)
+    lr(C)
+    #t(C)
+    #r(C)
+    #r(C)
+    #ba(C)
+    #BO(C)
+    #T(C)
 
 #
 # Testing
 #
 Cube = newSolvedCube()
 
-
 printCube(Cube)
+
+seq = genScrambleSeq(20)
+print(seq)
+#applySeq(seq, Cube)
+test(Cube)
 print('After Rotation')
-B(Cube)
-
-
 printCube(Cube)
