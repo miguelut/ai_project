@@ -2,8 +2,11 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage[margin=1.0in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
 
-\title{An Overview of Adversarial Searching}
+\title{AI: An Overview of Uninformed Searching and Applications}
 \author{Dylan Thompson \and Michael M. Wright}
 
 \begin{document}
@@ -12,8 +15,106 @@
 \tableofcontents
 
 \begin{abstract}
+This paper begins with a broad overview of uninformed search algorithms in the 
+field of Artificial Intelligence.  While search is useful for a variety of toy 
+problems such as the Wolf-Goat-Cabbage problem and the Missionaries and
+Cannibals problem, this paper will discuss some of the real-world problems
+for which uninformed searching is an acceptable solution.  The paper will then 
+analyze some of the different search algorithms as they relate to solving a 
+Rubik's cube.
+
+\textbf{Don't forget to add your conclusions!}
+
 \end{abstract}
 
-\chapter{Introduction to Adversarial Searching}
+\chapter{Searching}
+A small portion of solvable problems can be modeled in computers simply by
+mapping the entire set of conditions to corresponding actions.  However, for
+some problems this mapping is impractical if not impossible given the
+constraints of our current technology.  In situations like these it becomes
+imperative to build a \textbf{goal-based} agent.  Goal-based agents can, in
+effect, consider future actions and evaluate the effect of those future
+actions on reaching the desired solution.\cite{norvig}  The two main
+subfields of goal-based agents are search and planning.\cite{wikiAgent} The
+field of searching can be further whittled down into those algorithms that
+utilize uninformed algorithms and those that utilize informed algorithms.
+Later in the chapter we will look at the uninformed searching algorithms in
+use today.  First, however, we must consider the criteria a problem must meet
+before we can use a search agent to solve that problem.  It turns out that a
+problem needs to be \textbf{well-defined} (or well-structured) prior to 
+employing a searching agent to solve the problem.\cite{shun}
+
+\section{Defining the Problem}
+If we think about it there are some fairly obvious things we need to know
+before we attempt to solve a problem.  For instance, we definitely need to be
+able to check if we've actually solved it.  Also, we will presumably need a
+place to start, or an initial state. Further, we need a set of actions our 
+agent can take along with transition model that will give us a new state after
+we have taken an action.  The final, less obvious thing we need is a path cost.
+\cite{norvig}  More concisely, a well-defined problem consists of these
+five items:
+
+\begin{itemize}
+\item An \textbf{initial state}.
+\item A set of \textbf{actions}.
+\item A \textbf{transition model}.
+\item A \textbf{goal-test}.
+\item A \textbf{path cost}.\cite{norvig}
+\end{itemize}
+
+Once the problem is defined, we can go about building our agent to search for
+a solution.  However, as we shall see in the next sections, not all solutions
+were created equal.
+
+\section{Searching}
+In much of the literature regarding searching many authors refer to the
+\textbf{search space}.  Formally, the search space is the solution space defined
+by the set of all possible candidate solutions.\cite{wikiSpace}  For goal-based
+agents it is generally easiest to picture the search space as a tree.  We build
+the tree by expanding the nodes.  Each node of the tree is a state, and the
+connections between the nodes are abstractions of the relationship between
+actions and the transition function.  In other words, each action will yield a
+child node, and thus the tree expands for each action explored.  When we talk
+about search we are really talking about different methods for expanding the
+tree.\newline
+\indent At any point in time prior to reaching a solution to our problem we
+have a set of "temporary" (assuming at least one action is available for the
+node) leaf nodes that can be expanded.  This is called the \textbf{frontier}
+or open list.\cite{norvig}  The manner in which we choose which frontier node
+to expand will be the defining characteristic of the searches we talk about
+in the following sections.  Do we want to expand all the nodes at the same
+depth first?  Or perhaps we want to follow a single path as deep as it will go
+before moving on to the next path.  In addition, do we need to check for loops
+in our path, or will the nature of our algorithm make checking for repeated
+states a needless overhead?  Determining which state to expand next is generally
+called the \textbf{search strategy}.\cite{norvig}  
+
+
+\begin{thebibliography}{9}
+
+  \bibitem{norvig}
+    Stuart Russel and Peter Norvig,
+    \textit{Artificial Intelligence: A Modern Approach}.
+    Prentice Hall, Upper Saddle River,
+    3rd Edition,
+    2010.
+
+  \bibitem{wikiAgent}
+    Intelligent Agent. 21 April, 2013.  
+    In \textit{Wikipedia}.  Retrieved April 25, 2013,
+    from http://en.wikipedia.org/wiki/intelligent\_agent
+  
+  \bibitem{wikiSpace}
+    Search Space. 17 March, 2013.  
+    In \textit{Wikipedia}.  Retrieved April 25, 2013,
+    from http://en.wikipedia.org/wiki/search\_space
+
+  \bibitem{shun}
+    Long, Shun, Hui-Jin Wang, Jian-Hua Cai, and Chan-Juan Liu. 
+    "Enhancing Intelligent Agents with Information Retrieval Techniques." 
+    \textit{Fourth International Conference on Natural Computation} 2 
+    (2008): 627-31. Print.
+
+\end{thebibliography}
 
 \end{document}
