@@ -70,13 +70,24 @@ were created equal.
 In much of the literature regarding searching many authors refer to the
 \textbf{search space}.  Somewhat informally, the search space is the solution
 space defined by the set of all possible candidate solutions.\cite{wikiSpace}
+More formally, the concept of \textbf{state space}, a synonym of search space,
+has been defined as a 4-tuple containing the following elements:
+
+\begin{itemize}
+\item A set of states N.
+\item A set of arcs A.
+\item A nonempty subset of N, S, that contains start states.
+\item A nonempty subset of N, G, that contains goal states.\cite{zhang99}
+\end{itemize}
+
 For goal-based agents it is generally easiest to picture the search space as a
-tree.  We build the tree by expanding the nodes.  Each node of the tree is a
-state, and the connections between the nodes are abstractions of the
-relationship between actions and the transition function.  In other words, each
-action will yield a child node, and thus the tree expands for each action
-explored.  When we talk about search we are really talking about different
-methods for expanding the tree.\newline
+tree, though it is more precisely a directed graph.\cite{zhang99}  We build the
+tree by expanding the nodes.  Each node of the tree is a state, and the
+connections between the nodes are abstractions of the relationship between
+actions and the transition function.  In other words, each action will yield a
+child node, and thus the tree expands for each action explored.  When we talk
+about search we are really talking about different methods for expanding the
+tree.\newline
 \indent At any point in time prior to reaching a solution to our problem we
 have a set of "temporary" leaf nodes (assuming at least one action is available
 for the nodes) that can be expanded.  This is called the \textbf{frontier}
@@ -104,8 +115,11 @@ search algorithm data structure needs the following four items:
 Together with the elements of a well-defined problem it is easy to see how to
 generate a child node given a parent node and an action.  Given a state and an
 action we can apply the transition model to get the child node's state.  The
-path cost is then computed with the information from the problem, and can be a
-constant or functional in nature.
+path cost is then computed with the information from the problem, and can be
+constant or dynamic in nature.  Generally, a queue data structure is used to
+keep track of which node to expand next because a queue has the FIFO property.
+This makes it ideal for searching in a specific order.\cite{norvig}\newline
+\indent 
 
 \begin{thebibliography}{9}
 
@@ -131,6 +145,10 @@ constant or functional in nature.
     "Enhancing Intelligent Agents with Information Retrieval Techniques." 
     \textit{Fourth International Conference on Natural Computation} 2 
     (2008): 627-31. Print.
+
+  \bibitem{zhang99}
+    Zhang, Weixiong. \textit{State-space Search: Algorithms, Complexity,
+    Extensions, and Applications}. New York: Springer, 1999. Print.
 
 \end{thebibliography}
 
