@@ -2,6 +2,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage[margin=1.0in]{geometry}
 \usepackage{setspace}
 \onehalfspacing
 
@@ -33,17 +34,45 @@ some problems this mapping is impractical if not impossible given the
 constraints of our current technology.  In situations like these it becomes
 imperative to build a \textbf{goal-based} agent.  Goal-based agents can, in
 effect, consider future actions and evaluate the effect of those future
-actions on reaching the desired solution.\cite[p.~64]{norvig}  The two main
+actions on reaching the desired solution.\cite{norvig}  The two main
 subfields of goal-based agents are search and planning.\cite{wikiAgent} The
 field of searching can be further whittled down into those algorithms that
 utilize uninformed algorithms and those that utilize informed algorithms.
 Later in the chapter we will look at the uninformed searching algorithms in
 use today.  First, however, we must consider the criteria a problem must meet
 before we can use a search agent to solve that problem.  It turns out that a
-problem needs to be \textbf{well-defined} prior to unleashing a searching
-agent to solve the problem.
+problem needs to be \textbf{well-defined} (or well-structured) prior to 
+employing a searching agent to solve the problem.\cite{shun}
 
 \section{Defining the Problem}
+If we think about it there are some fairly obvious things we need to know
+before we attempt to solve a problem.  For instance, we definitely need to be
+able to check if we've actually solved it.  Also, we will presumably need a
+place to start, or an initial state. Further, we need a set of actions our 
+agent can take along with transition model that will give us a new state after
+we have taken an action.  The final, less obvious thing we need is a path cost.
+\cite{norvig}  More concisely, a well-defined problem consists of these
+five items:
+
+\begin{itemize}
+\item An \textbf{initial state}.
+\item A set of \textbf{actions}.
+\item A \textbf{transition model}.
+\item A \textbf{goal-test}.
+\item A \textbf{path cost}.\cite{norvig}
+\end{itemize}
+
+Once the problem is defined, we can go about building our agent to search for
+a solution.  However, as we shall see in the next sections, not all solutions
+were created equal.
+
+\section{Searching}
+In much of the literature regarding searching many authors refer to the
+\textbf{search space}.  For goal-based agents it is generally easiest to 
+picture the search space as a tree.  Each node of the tree is a state, and
+the connections between the nodes are abstractions of the relationship between
+actions and the transition function.  In other words, each action will yield a
+child node.
 
 
 \begin{thebibliography}{9}
@@ -59,6 +88,12 @@ agent to solve the problem.
     Intelligent Agent. 21 April, 2013.  
     In \textit{Wikipedia}.  Retrieved April 25, 2013,
     from http://en.wikipedia.org/wiki/intelligent\_agent
+
+  \bibitem{shun}
+    Long, Shun, Hui-Jin Wang, Jian-Hua Cai, and Chan-Juan Liu. 
+    "Enhancing Intelligent Agents with Information Retrieval Techniques." 
+    \textit{Fourth International Conference on Natural Computation} 2 
+    (2008): 627-31. Print.
 
 \end{thebibliography}
 
