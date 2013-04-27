@@ -68,11 +68,26 @@ were created equal.
 
 \section{Searching}
 In much of the literature regarding searching many authors refer to the
-\textbf{search space}.  For goal-based agents it is generally easiest to 
-picture the search space as a tree.  Each node of the tree is a state, and
-the connections between the nodes are abstractions of the relationship between
+\textbf{search space}.  Formally, the search space is the solution space defined
+by the set of all possible candidate solutions.\cite{wikiSpace}  For goal-based
+agents it is generally easiest to picture the search space as a tree.  We build
+the tree by expanding the nodes.  Each node of the tree is a state, and the
+connections between the nodes are abstractions of the relationship between
 actions and the transition function.  In other words, each action will yield a
-child node.
+child node, and thus the tree expands for each action explored.  When we talk
+about search we are really talking about different methods for expanding the
+tree.\newline
+\indent At any point in time prior to reaching a solution to our problem we
+have a set of "temporary" (assuming at least one action is available for the
+node) leaf nodes that can be expanded.  This is called the \textbf{frontier}
+or open list.\cite{norvig}  The manner in which we choose which frontier node
+to expand will be the defining characteristic of the searches we talk about
+in the following sections.  Do we want to expand all the nodes at the same
+depth first?  Or perhaps we want to follow a single path as deep as it will go
+before moving on to the next path.  In addition, do we need to check for loops
+in our path, or will the nature of our algorithm make checking for repeated
+states a needless overhead?  Determining which state to expand next is generally
+called the \textbf{search strategy}.\cite{norvig}  
 
 
 \begin{thebibliography}{9}
@@ -88,6 +103,11 @@ child node.
     Intelligent Agent. 21 April, 2013.  
     In \textit{Wikipedia}.  Retrieved April 25, 2013,
     from http://en.wikipedia.org/wiki/intelligent\_agent
+  
+  \bibitem{wikiSpace}
+    Search Space. 17 March, 2013.  
+    In \textit{Wikipedia}.  Retrieved April 25, 2013,
+    from http://en.wikipedia.org/wiki/search\_space
 
   \bibitem{shun}
     Long, Shun, Hui-Jin Wang, Jian-Hua Cai, and Chan-Juan Liu. 
