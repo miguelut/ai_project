@@ -7,48 +7,59 @@ from copy import deepcopy
 
 def solveID(cube, depthlimit):
     for d in range(1,depthlimit+1):
-        C = deepcopy(cube)
-        seq = dfSearch(C, [], d)
+        #C = deepcopy(cube)
+        #seq = dfSearch(C, [], d)
+        seq = dfSearch(cube, [], d)
         if(seq != False):
             return seq
     return False
 
-def dfSearch(C, seq, depth):
-    if(rubics.checkSolved(C) == True):
+
+def dfSearch(cube, seq, depth):
+    if(rubics.checkSolved(cube) == True):
         return seq
     elif(depth > 0):
         ret = False
         for x in range(18):
-            newcube = deepcopy(C)
-            rubics.applySeq([x], newcube)
-            ret = dfSearch(newcube, seq + [x], depth - 1)
+            #newcube = deepcopy(C)
+            #rubics.applySeq([x], newcube)
+            #ret = dfSearch(newcube, seq + [x], depth - 1)
+            rubics.applySeq([x], cube)
+            ret = dfSearch(cube, seq + [x], depth - 1)
             if(ret != False):
                 return ret
+            rubics.applySeq(rubics.getUndoSeq([x]), cube)
         return False
     else:
         return False
 
 
-for i in range(10):
+
+#
+# Testing
+#
+
+for i in range(1):
     cube = rubics.newSolvedCube()
 
-    seq = rubics.genRandSeq(3)
+    seq = rubics.genRandSeq(5)
     rubics.applySeq(seq, cube)
     #rubics.printCube(cube)
     
     #ret = dfSearch(cube, [], 5)
-    ret = solveID(cube, 3)
+    ret = solveID(cube, 5)
     if( ret == False ):
         print('failed!')
-        #break
     else:
         print('change seq ' + str(seq))
         print('soln seq ' + str(ret) )
-        #print('before')
-        #rubics.printCube(cube)
-        #print('after')
-        #rubics.applySeq(ret, cube)        
-        #rubics.printCube(cube)
+        testcube = rubics.newSolvedCube()
+        rubics.applySeq(seq, testcube)
+        print('before')
+        rubics.printCube(testcube)
+        print('after')
+        rubics.applySeq(ret, testcube)        
+        rubics.printCube(testcube)
 
 
     
