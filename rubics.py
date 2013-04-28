@@ -52,23 +52,23 @@ Bottom = 5
 
 def newSolvedCube():
         C = list([list([list([1,1,1]),
-                   list([1,1,1]),
-                   list([1,1,1])]),
+                        list([1,1,1]),
+                        list([1,1,1])]),
                   list([list([2,2,2]),
-                   list([2,2,2]),
-                   list([2,2,2])]),
+                        list([2,2,2]),
+                        list([2,2,2])]),
                   list([list([3,3,3]),
-                   list([3,3,3]),
-                   list([3,3,3])]),
+                        list([3,3,3]),
+                        list([3,3,3])]),
                   list([list([4,4,4]),
-                   list([4,4,4]),
-                   list([4,4,4])]),
+                        list([4,4,4]),
+                        list([4,4,4])]),
                   list([list([5,5,5]),
-                   list([5,5,5]),
-                   list([5,5,5])]),
+                        list([5,5,5]),
+                        list([5,5,5])]),
                   list([list([6,6,6]),
-                   list([6,6,6]),
-                   list([6,6,6])])])
+                        list([6,6,6]),
+                        list([6,6,6])])])
 
         return C
               
@@ -96,7 +96,7 @@ def newSolvedCube():
 
 def f(C):
         # Front Face Rotation - clock-wise
-        C[Front] = list(zip(*((C[Front])[::-1])))
+        C[Front] = [list(tup) for tup in zip(*((C[Front])[::-1])) ]
 
         # Edges of Other Faces
         oldtop = C[Top][2]
@@ -108,7 +108,7 @@ def f(C):
 
 def F(C):
         # Front Face Rotation - counter-clock-wise
-        C[Front] = list(zip(*C[Front]))[::-1]
+        C[Front] = [list(tup) for tup in list(zip(*C[Front]))[::-1] ]
 
         # Edges of Other Faces
         oldtop = C[Top][2]
@@ -120,7 +120,7 @@ def F(C):
 
 def ba(C):
         # Back Face Rotation - clock-wise
-        C[Back] = list(zip(*((C[Back])[::-1])))
+        C[Back] = [list(tup) for tup in zip(*((C[Back])[::-1])) ]
 
         # Edges of Other Faces
         oldtop = list(C[Top][0])
@@ -133,7 +133,7 @@ def ba(C):
 
 def BA(C):
         # Back Face Rotation - counter-clock-wise
-        C[Back] = list(zip(*C[Back]))[::-1]
+        C[Back] = [list(tup) for tup in list(zip(*C[Back]))[::-1] ]
 
         # Edges of Other Faces
         oldtop = C[Top][0]
@@ -146,7 +146,7 @@ def BA(C):
 
 def l(C):
         # Left Face Rotation - clock-wise
-        C[Left] = list(zip(*((C[Left])[::-1])))
+        C[Left] = [list(tup) for tup in zip(*((C[Left])[::-1])) ]
 
         oldfront = []
         oldfront.append(C[Front][0][0])
@@ -168,7 +168,7 @@ def l(C):
 
 def L(C):
         # Left Face Rotation - counter-clock-wise
-        C[Left] = list(zip(*C[Left]))[::-1]
+        C[Left] = [list(tup) for tup in list(zip(*C[Left]))[::-1] ]
 
         oldfront = []
         oldfront.append(C[Front][0][0])
@@ -190,7 +190,7 @@ def L(C):
 
 def r(C):
         # Right Face Rotation - clock-wise
-        C[Right] = list(zip(*((C[Right])[::-1])))
+        C[Right] = [list(tup) for tup in zip(*((C[Right])[::-1])) ]
 
         oldfront = []
         oldfront.append(C[Front][0][2])
@@ -212,7 +212,7 @@ def r(C):
 
 def R(C):
          # Right Face Rotation - counter-clock-wise
-        C[Right] = list(zip(*C[Right]))[::-1]
+        C[Right] = [list(tup) for tup in list(zip(*C[Right]))[::-1] ]
 
         oldfront = []
         oldfront.append(C[Front][0][2])
@@ -225,16 +225,16 @@ def R(C):
         C[Top][0][2] = C[Back][0][2]
         C[Top][1][2] = C[Back][1][2]
         C[Top][2][2] = C[Back][2][2]
-        C[Back][0][2] = C[Bottom][0][0] # Careful here, the bottom is reflected accross vertical!
+        C[Back][0][2] = C[Bottom][2][0] # Careful here, the bottom is reflected accross vertical!
         C[Back][1][2] = C[Bottom][1][0]
-        C[Back][2][2] = C[Bottom][2][0]
+        C[Back][2][2] = C[Bottom][0][0]
         C[Bottom][0][0] = oldfront[2]
         C[Bottom][1][0] = oldfront[1]
         C[Bottom][2][0] = oldfront[0]
 
 def t(C):
          # Top Face Rotation - clock-wise
-        C[Top] = list(zip(*((C[Top])[::-1])))
+        C[Top] = [list(tup) for tup in zip(*((C[Top])[::-1])) ]
 
         oldback = list(C[Back][2])
         
@@ -253,7 +253,7 @@ def t(C):
 
 def T(C):
          # Top Face Rotation - counter-clock-wise
-        C[Top] = list(zip(*C[Top]))[::-1]
+        C[Top] = [list(tup) for tup in list(zip(*C[Top]))[::-1] ]
 
         oldback = list(C[Back][2])
         
@@ -272,7 +272,7 @@ def T(C):
 
 def bo(C):
          # Bottom Face Rotation - clock-wise
-        C[Bottom] = list(zip(*C[Bottom]))[::-1]  # This must be flipped!
+        C[Bottom] = [list(tup) for tup in list(zip(*C[Bottom]))[::-1] ]  # This must be flipped!
  
         oldback = list(C[Back][0])
         
@@ -291,7 +291,7 @@ def bo(C):
 
 def BO(C):
          # Top Face Rotation - counter-clock-wise
-        C[Bottom] = list(zip(*((C[Bottom])[::-1]))) # Flipp it !! because botom is reflected
+        C[Bottom] = [list(tup) for tup in zip(*((C[Bottom])[::-1])) ] # Flipp it !! because botom is reflected
 
         oldback = list(C[Back][0])
         
@@ -438,58 +438,102 @@ def genScrambleSeq(length):
     scramSeq = []
     for x in range(length):
         scramSeq.append(random.randrange(0,18))
+        #scramSeq.append(random.choice([2,3,10,11]))
     return scramSeq
 
 
 def applySeq(seq, cube):
-    #for n in seq:
-    listOfAllOps[0](cube)
-    listOfAllOps[1](cube)
-    listOfAllOps[2](cube)
-    listOfAllOps[3](cube)
-    #listOfAllOps[4](cube)
-    #listOfAllOps[5](cube)
-    #listOfAllOps[6](cube)
-    #listOfAllOps[7](cube)
-    #listOfAllOps[8](cube)
-    listOfAllOps[9](cube)
-    #listOfAllOps[10](cube)
-    #listOfAllOps[11](cube)
-    #listOfAllOps[12](cube)
-    #listOfAllOps[13](cube)
-    #listOfAllOps[14](cube)
-    #listOfAllOps[15](cube)
-    #listOfAllOps[16](cube)
-    #listOfAllOps[17](cube)
-
-#def getUndoSeq():
+    for n in seq:
+        listOfAllOps[n](cube)
 
 
-#def newScrambledCube():
+def getUndoSeq(seq):
+    def inverse(x):
+        if (x % 2 == 0):
+            return x + 1
+        else:
+            return x - 1
+    return [inverse(x) for x in seq[::-1]]
 
-def test(C):
-    f(C)
-    F(C)
-    ba(C)
-    lr(C)
-    print("After lr(C)")
-    #t(C)
-    #r(C)
-    #r(C)
-    #ba(C)
-    #BO(C)
-    #T(C)
+    
+def newScrambledCube():
+    Cube = newSolvedCube()
+    seq = genScrambledSeq()
+    applySeq(seq, Cube)
+    return Cube
+
+def checkSolved(C): 
+    if(
+        C[Front][0][0] == C[Front][1][1] and
+        C[Front][0][1] == C[Front][1][1] and
+        C[Front][0][2] == C[Front][1][1] and
+        C[Front][1][0] == C[Front][1][1] and
+        C[Front][1][2] == C[Front][1][1] and
+        C[Front][2][0] == C[Front][1][1] and
+        C[Front][2][1] == C[Front][1][1] and
+        C[Front][2][2] == C[Front][1][1] and
+        C[Back][0][0] == C[Back][1][1] and
+        C[Back][0][1] == C[Back][1][1] and
+        C[Back][0][2] == C[Back][1][1] and
+        C[Back][1][0] == C[Back][1][1] and
+        C[Back][1][2] == C[Back][1][1] and
+        C[Back][2][0] == C[Back][1][1] and
+        C[Back][2][1] == C[Back][1][1] and
+        C[Back][2][2] == C[Back][1][1] and
+        C[Top][0][0] == C[Top][1][1] and
+        C[Top][0][1] == C[Top][1][1] and
+        C[Top][0][2] == C[Top][1][1] and
+        C[Top][1][0] == C[Top][1][1] and
+        C[Top][1][2] == C[Top][1][1] and
+        C[Top][2][0] == C[Top][1][1] and
+        C[Top][2][1] == C[Top][1][1] and
+        C[Top][2][2] == C[Top][1][1] and
+        C[Bottom][0][0] == C[Bottom][1][1] and
+        C[Bottom][0][1] == C[Bottom][1][1] and
+        C[Bottom][0][2] == C[Bottom][1][1] and
+        C[Bottom][1][0] == C[Bottom][1][1] and
+        C[Bottom][1][2] == C[Bottom][1][1] and
+        C[Bottom][2][2] == C[Bottom][1][1] and
+        C[Bottom][2][1] == C[Bottom][1][1] and
+        C[Bottom][2][0] == C[Bottom][1][1] and
+        C[Left][0][0] == C[Left][1][1] and
+        C[Left][0][1] == C[Left][1][1] and
+        C[Left][0][2] == C[Left][1][1] and
+        C[Left][1][0] == C[Left][1][1] and
+        C[Left][1][2] == C[Left][1][1] and
+        C[Left][2][0] == C[Left][1][1] and
+        C[Left][2][1] == C[Left][1][1] and
+        C[Left][2][2] == C[Left][1][1] and
+        C[Right][0][0] == C[Right][1][1] and
+        C[Right][0][1] == C[Right][1][1] and
+        C[Right][0][2] == C[Right][1][1] and
+        C[Right][1][0] == C[Right][1][1] and
+        C[Right][1][2] == C[Right][1][1] and
+        C[Right][2][0] == C[Right][1][1] and
+        C[Right][2][1] == C[Right][1][1] and
+        C[Right][2][2] == C[Right][1][1]
+          ):
+        return True
+    else: return False
+        
+      
 
 #
 # Testing
 #
-Cube = newSolvedCube()
-
-printCube(Cube)
-
-seq = genScrambleSeq(20)
-print(seq)
-#applySeq(seq, Cube)
-test(Cube)
-print('After Rotation')
-printCube(Cube)
+##Cube = newSolvedCube()
+##
+##
+##sucess = True
+##for i in range(10000):
+##    seq = genScrambleSeq(100)
+##    applySeq(seq, Cube)
+##    applySeq(getUndoSeq(seq), Cube)
+##    if( checkSolved(Cube) != True):
+##        print('failed attempt!!!')
+##        printCube(Cube)
+##        sucess = False
+##        break
+##
+##if( sucess):
+##    print('Awesome!')
