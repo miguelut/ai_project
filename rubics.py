@@ -4,13 +4,16 @@ import random
 
 #
 # This file contains the definition of the model for a 3X3X3 cube
-# Along with all of the functions needed to create it, manipulate it and visualize it.
+# along with all of the functions needed to create it, manipulate it and visualize it.
 # Import this file to impliment a solving algorithm.
 #
 #
 
 
-# 	The cube is visualized as a 3d array as follows:
+# 	The cube is modeled as a array of 6 2d arrays,
+#          each of which represents a face of the cube
+#
+#       I'll visualize it like this
 #
 #               |  |  |  |
 #      	        |  back  |
@@ -24,10 +27,15 @@ import random
 #	        |  front |
 #	        |  |  |  |
 #
+#       This is meant to look like the cube if you had litterally folded it out
+#       like a paper cube. Thus the bottom face is reflected accross the vertical axis.
+#       All of the turns directions will be indicated in reference to this picture.
+#       When thinking of the following rotations you must abandon how you think about
+#       the cube in 3d form. Remember all turns are made in reference to this picture!
 #
 
 
-# The cube shall be indexed like this:
+# The tiles of the cube shall be indexed like this:
 # Cube[side][vertical axis][horizontal axis] = color
 
 # The axises refer to the orientation of the drawing above.
@@ -72,7 +80,6 @@ def newSolvedCube():
 
         return C
               
-#def newScrambledCube():
 
 
         
@@ -83,10 +90,12 @@ def newSolvedCube():
 # -There are 18 operations, two for each face/middle layer
 #  in either direction (clock-wise, counter-clock-wise)
 #
+# -All of the operations are done in place. The functions will not return anything
+#
 # -I do not implement double turns explicitly
 #
 # -Each operation will be represented with either a letter denoting the face that is turned
-#  or the two faces between which is the middle layer turned
+#  or a pair of letters indicating the two faces between which is the middle layer turned.
 #
 # -Lowercase means turning clock-wise/right/up
 #  Uppercase means turning counter-clock-wise/left/down (relative to the picture above!!!)
