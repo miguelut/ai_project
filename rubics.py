@@ -395,7 +395,7 @@ def LR(C):
     C[Top][2][1] = oldfront[2]
 
 
-listOfAllOps = [f,F,ba,BA,t,T ,bo,BO,l,L ,r ,R ,lr ,LR,tb,TB,fb,FB]
+listOfAllOps = [f,F,ba,BA,t,T,bo,BO,l,L,r,R,lr,LR,tb,TB,fb,FB]
 
 #
 # Cube Visualization
@@ -433,11 +433,11 @@ def printCube(C):
 # Scrambling and Operation Sequences
 #
 
-def genScrambleSeq(length):
+
+def genRandSeq(length):
     scramSeq = []
     for x in range(length):
         scramSeq.append(random.randrange(0,18))
-        #scramSeq.append(random.choice([2,3,10,11]))
     return scramSeq
 
 
@@ -457,7 +457,7 @@ def getUndoSeq(seq):
     
 def newScrambledCube():
     Cube = newSolvedCube()
-    seq = genScrambledSeq()
+    seq = genRandSeq(20)
     applySeq(seq, Cube)
     return Cube
 
@@ -525,7 +525,7 @@ def checkSolved(C):
 ##
 ##sucess = True
 ##for i in range(10000):
-##    seq = genScrambleSeq(100)
+##    seq = genRandSeq(100)
 ##    applySeq(seq, Cube)
 ##    applySeq(getUndoSeq(seq), Cube)
 ##    if( checkSolved(Cube) != True):
