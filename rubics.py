@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import random
 
 
@@ -471,6 +472,7 @@ def test(C):
     F(C)
     ba(C)
     lr(C)
+    print("After lr(C)")
     #t(C)
     #r(C)
     #r(C)
