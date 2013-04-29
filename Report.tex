@@ -66,7 +66,7 @@ Once the problem is defined, we can go about building our agent to search for
 a solution.  However, as we shall see in the next sections, not all solutions
 were created equal.
 
-\section{Searching}
+\section{Search Properties}
 In much of the literature regarding searching many authors refer to the
 \textbf{search space}.  Somewhat informally, the search space is the solution
 space defined by the set of all possible candidate solutions.\cite{wikiSpace}
@@ -116,19 +116,58 @@ Together with the elements of a well-defined problem it is easy to see how to
 generate a child node given a parent node and an action.  Given a state and an
 action we can apply the transition model to get the child node's state.  The
 path cost is then computed with the information from the problem, and can be
-constant or dynamic in nature.  Generally, a queue data structure is used to
-keep track of which node to expand next because a queue has the FIFO property.
-This makes it ideal for searching in a specific order.\cite{norvig}\newline
-\indent 
+constant or dynamic in nature.  Generally, choosing the data structure used in 
+the search will have a huge determination on the search strategy.  A queue 
+is FIFO and will have a very different search outcome from a LIFO stack or a 
+priority queue.\cite{norvig}\newline
+
+\section{Search Performance}
+When searching we often find that some attributes of the search are more
+important to us than others.  For instance, sometimes time may be of
+paramount importance, while other times our search may operate under certain
+memory constraints that make conservation of space take priority.  The various
+algorithms we will consider in the next few sections will each have strengths
+and weaknesses in the following categories:
+
+\begin{itemize}
+\item \textbf{Completeness}.
+\item \textbf{Optimality}.
+\item \textbf{Time Complexity}.
+\item \textbf{Space Complexity}.
+\end{itemize}
+
+Completeness is a measure of whether an algorithm is guaranteed to find a
+solution if one exists.  However, a complete algorithm must also complete and
+report back that a solution does not exist if indeed that is the case.
+\cite{lavalle06} A search algorithm can be either optimal or suboptimal.  It
+is optimal if it returns the solution with the lowest cost-path (if there is a 
+solution), otherwise, it is suboptimal.\cite{norvig} Time and space complexity
+are exactly what they sound like.  Time complexity is generally a measure of 
+how long the algorithm will take to complete given an arbitrary number of
+inputs.  Space complexity is how much additional space the algorithm must
+allocate (above and beyond the initial problem data) in order to successfully
+complete the algorithm.  Obviously, the constraints under which we perform our
+search will determine which of these criteria is the most important.
+
+\section{Search Algorithms}
+Now that we have a basic understanding of the terminology and attributes of a
+search algorithm, we will discuss what are termed \textbf{uninformed} (also 
+sometimes called \textbf{brute-force}) search algorithms.  These algorithms
+are generally the easiest to implement because they assume no knowledge about
+the search space or the search problem.  Generally, if a \textbf{heuristic}
+function \textit{h(n)} can be found that can reasonably estimate the path cost
+from \textit{n} then an informed search should be used.  However, sometimes such
+a function either cannot be found or does not exist.  In these cases, uninformed
+search can be used.\cite{norvig}
 
 \begin{thebibliography}{9}
 
   \bibitem{norvig}
-    Stuart Russel and Peter Norvig,
+    Russel, Stuart and Peter Norvig,
     \textit{Artificial Intelligence: A Modern Approach}.
     Prentice Hall, Upper Saddle River,
     3rd Edition,
-    2010.
+    2010. Print.
 
   \bibitem{wikiAgent}
     Intelligent Agent. 21 April, 2013.  
@@ -149,6 +188,12 @@ This makes it ideal for searching in a specific order.\cite{norvig}\newline
   \bibitem{zhang99}
     Zhang, Weixiong. \textit{State-space Search: Algorithms, Complexity,
     Extensions, and Applications}. New York: Springer, 1999. Print.
+
+  \bibitem{lavalle06}
+    LaValle, Steven M., \textit{Planning Algorithms}.
+    Cambridge University Press. 2006. Web.
+    Retrieved from http://planning.cs.uiuc.edu/node631.html
+ 
 
 \end{thebibliography}
 
