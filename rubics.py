@@ -337,18 +337,13 @@ def printCube(C):
 
 def genRandSeq(length):
         return [random.randrange(0,18) for x in range(length)]
-##    scramSeq = []
-##    for x in range(length):
-##        scramSeq.append()
-##    return scramSeq
-
 
 def applySeq(seq, cube):
-        if( len(seq) == 0):
+        if( not seq ):
                 return cube
         else:
-                head, *tail = seq
-                return listOfAllOps[head](applySeq(tail, cube))
+                *head, tail = seq
+                return listOfAllOps[tail](applySeq(head, cube))
 
 
 def getUndoSeq(seq):
@@ -360,11 +355,9 @@ def getUndoSeq(seq):
     return [inverse(x) for x in seq[::-1]]
 
     
-##def newScrambledCube(s):
-##    Cube = newSolvedCube()
-##    seq = genRandSeq(s)
-##    applySeq(seq, Cube)
-##    return Cube
+def newScrambledCube(s):
+        return applySeq(genRandSeq(s), solvedCube)
+
 
 def checkSolved(C):
         if( len(set(C[Front][0]) | set(C[Front][1]) | set(C[Front][2])) == 1 and
@@ -378,41 +371,33 @@ def checkSolved(C):
         else: return
 
 
-##
-##printCube(solvedCube)
-##
-##printCube(tb(solvedCube))
-##printCube(TB(solvedCube))
-##
-##print(tb(TB(TB(tb(solvedCube)))) == solvedCube)
-
 
 #
 # Testing
 #
 #Cube = newSolvedCube()
 
-import time
-
-totalTime = 0
-sucess = True
-for i in range(1000):
-    seq = genRandSeq(100)
-    #print(seq)
-    cube = applySeq(seq, solvedCube)
-    #printCube(cube)
-    
-    undocube = applySeq(getUndoSeq(seq), cube)
-    #printCube(undocube)
-    t1 = time.time()
-    solved = checkSolved(undocube) 
-    t2 = time.time()
-    totalTime += (t2-t1)
-    if( solved != True ):
-        print('failed attempt!!!')
-        printCube(undocube)
-        sucess = False
-        break
-
-if( sucess):
-    print('Avg checkSolved time ' + str(totalTime/10000))
+##import time
+##
+##totalTime = 0
+##sucess = True
+##for i in range(1000):
+##    seq = genRandSeq(100)
+##    #print(seq)
+##    cube = applySeq(seq, solvedCube)
+##    #printCube(cube)
+##    
+##    undocube = applySeq(getUndoSeq(seq), cube)
+##    #printCube(undocube)
+##    t1 = time.time()
+##    solved = checkSolved(undocube) 
+##    t2 = time.time()
+##    totalTime += (t2-t1)
+##    if( solved != True ):
+##        print('failed attempt!!!')
+##        printCube(undocube)
+##        sucess = False
+##        break
+##
+##if( sucess):
+##    print('Avg checkSolved time ' + str(totalTime/10000))

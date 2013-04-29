@@ -1,34 +1,32 @@
 from collections import deque
-from copy import deepcopy
 from rubics import *
 import time
 
 
 
 def bfSearch(cube):
+    visitedCubes = set()
     seqQue = deque([[]])
     while( True ):     
         seq = seqQue.popleft()
-        if( len(seq) > 6):
+        if( len(seq) > 7):
             return False
         else:
-            applySeq(seq, cube)
-            if(checkSolved(cube)):
+            newcube = applySeq(seq, cube)    
+            if(checkSolved(newcube)):
                 return seq
             else:
-                applySeq(getUndoSeq(seq), cube)
-                seqQue.extend([seq + [x] for x in range(18)])
+                if( newcube not in visitedCubes ):
+                    visitedCubes.add(newcube)
+                    seqQue.extend([seq + [x] for x in range(18)])
 
 
 
 t1 = time.time()
 
 for x in range(1):
-    cube = newSolvedCube()
-    cube2 = deepcopy(cube)
     seq = genRandSeq(6)
-    applySeq(seq, cube)
-    applySeq(seq, cube2)
+    cube = applySeq(seq, solvedCube)
     print(seq)
 
     soln = bfSearch(cube)
@@ -36,9 +34,7 @@ for x in range(1):
        print("failed")
        break
     print(soln)
-    printCube(cube2)
-    applySeq(soln, cube2)
-    printCube(cube2)
+    printCube(applySeq(soln, cube))
 
 t2 = time.time()
 print(' took %0.3f s' % (t2-t1))
