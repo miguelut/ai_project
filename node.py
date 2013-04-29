@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+#Class used to store our graph information
 class Node:
   
   def __init__(self, num):

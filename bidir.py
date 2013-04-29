@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+#Bidirectional search
 from node import Node
 
 def bidir(nodes,start, goal):

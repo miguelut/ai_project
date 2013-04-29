@@ -2,8 +2,6 @@ from collections import deque
 from rubics import *
 import time
 
-
-
 def bfSearch(cube):
     visitedCubes = set()
     seqQue = deque([[]])

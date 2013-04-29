@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+#Breadth-frist search.
 from node import Node
 
 def bfs(nodes,start, goal):

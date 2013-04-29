@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+#Depth limited depth-first search
 from node import Node
 
 limit = 7

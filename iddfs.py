@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+#Iterative deepening depth-first search
 from node import Node
 
 def iddfs(nodes,start, goal):
