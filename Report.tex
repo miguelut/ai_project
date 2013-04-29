@@ -15,13 +15,13 @@
 \tableofcontents
 
 \begin{abstract}
-This paper begins with a broad overview of uninformed search algorithms in the 
-field of Artificial Intelligence.  While search is useful for a variety of toy 
+This paper begins with a broad overview of uninformed search algorithms in the
+field of Artificial Intelligence.  While search is useful for a variety of toy
 problems such as the Wolf-Goat-Cabbage problem and the Missionaries and
-Cannibals problem, this paper will discuss some of the real-world problems
-for which uninformed searching is an acceptable solution.  The paper will then 
-analyze some of the different search algorithms as they relate to solving a 
-Rubik's cube.
+Cannibals problem, this paper will discuss some of the characteristics of
+problems that could potentially lead to use of uninformed searching in real
+world scenarios.  The paper will then analyze some of the different search
+algorithms as they relate to solving a Rubik's cube.
 
 \textbf{Don't forget to add your conclusions!}
 
@@ -74,10 +74,10 @@ More formally, the concept of \textbf{state space}, a synonym of search space,
 has been defined as a 4-tuple containing the following elements:
 
 \begin{itemize}
-\item A set of states N.
-\item A set of arcs A.
-\item A nonempty subset of N, S, that contains start states.
-\item A nonempty subset of N, G, that contains goal states.\cite{zhang99}
+\item A set of states $N$.
+\item A set of arcs $A$.
+\item A nonempty subset of $N$, $S$, that contains start states.
+\item A nonempty subset of $N$, $G$, that contains goal states.\cite{zhang99}
 \end{itemize}
 
 For goal-based agents it is generally easiest to picture the search space as a
@@ -121,7 +121,7 @@ the search will have a huge determination on the search strategy.  A queue
 is FIFO and will have a very different search outcome from a LIFO stack or a 
 priority queue.\cite{norvig}\newline
 
-\section{Search Performance}
+\section{Measuring Performance}
 When searching we often find that some attributes of the search are more
 important to us than others.  For instance, sometimes time may be of
 paramount importance, while other times our search may operate under certain
@@ -149,14 +149,14 @@ allocate (above and beyond the initial problem data) in order to successfully
 complete the algorithm.  Obviously, the constraints under which we perform our
 search will determine which of these criteria is the most important.
 
-\section{Search Algorithms}
+\section{Algorithms}
 Now that we have a basic understanding of the terminology and attributes of a
 search algorithm, we will discuss what are termed \textbf{uninformed} (also 
 sometimes called \textbf{brute-force}) search algorithms.  These algorithms
 are generally the easiest to implement because they assume no knowledge about
 the search space or the search problem.  Generally, if a \textbf{heuristic}
-function \textit{h(n)} can be found that can reasonably estimate the path cost
-from \textit{n} then an informed search should be used.  However, sometimes such
+function $h(n)$ can be found that can reasonably estimate the path cost
+from $n$ then an informed search should be used.  However, sometimes such
 a function either cannot be found, is impractical to generate, or does not 
 exist.  In these cases, uninformed search must be used.\cite{norvig}
 
@@ -181,14 +181,14 @@ non-descending function.  The most common scenario where this is true is where
 the path cost is constant.\cite{norvig}  We will see this in the second part of
 the paper when we deal with the Rubik's cube problem. The primary drawbacks to
 breadth-first search are found in the area of complexity.  Assuming that each
-parent has \textit{b} children (this is sometimes referred to as the 
-\textbf{branching factor}), and the solution is at depth \textit{d} then the 
+parent has $b$ children (this is sometimes referred to as the 
+\textbf{branching factor}), and the solution is at depth $d$ then the 
 time complexity is:\vspace{5 mm}
 
 $b + b^2 + ... + b^d = O(b^d)$ \cite{norvig}\vspace{5 mm}
 
 It is easy to picture this since, on any given level, each parent node will
-spawn \textit{b} children.  On a related note, the space complexity will be
+spawn $b$ children.  On a related note, the space complexity will be
 determined by the size of the frontier.\cite{norvig} So the space complexity is
 also $O(b^d)$.  This is a severe limitation on the
 practical applications of uninformed breadth-first searching, as it will be
@@ -202,7 +202,7 @@ expands the most \textit{shallow} node first, uniform-cost search will expand
 the node with the lowest total \textit{path cost} first.\cite{norvig} This
 requires a different ordering of the process queue.  As mentioned above,
 breadth-first search is optimal only in those situations where the path-cost
-function \textit{g(n)} is non-decreasing.  Uniform-cost search has the
+function $g(n)$ is non-decreasing.  Uniform-cost search has the
 advantage that it is \textit{always} optimal.  There are two other subtle
 differences between breadth-first and uniform-cost search.  The first is that,
 whereas the goal test in breadth-first search is applied before the node is
@@ -234,13 +234,13 @@ a complete algorithm as it will eventually span the entire search
 space.\cite{norvig} However, depth-first search is non optimal since it returns
 the first solution it encounters without any regard to whether a less
 costly solution exists in the search space. As a consequence of this, the time
-complexity of depth first search must be given in terms of \textit{m}, the
+complexity of depth first search must be given in terms of $m$, the
 maximum depth of any node.  With this in mind the time complexity of depth-first
-search is $O(b^m)$, where \textit{m} can be much larger than the \textit{d} from
+search is $O(b^m)$, where $m$ can be much larger than the $d$ from
 breadth-first search.\cite{norvig} Where depth-first search really shines is in
 the space complexity category.  Because a stack is used as the data structure,
 the maximum number of nodes in the stack for each level is simply the branching
-factor \textit{b}.  By its nature, the algorithm guarantees that all children
+factor $b$.  By its nature, the algorithm guarantees that all children
 of one node are popped from the stack before any children of another node on
 the same level are added to the stack.  Therefore, the space complexity of 
 depth-first search is $O(bm)$.  It is possible to further cut down on this 
@@ -253,7 +253,66 @@ limit on the depth to which the algorithm will traverse the search tree prior
 to giving up.  This is comes in handy when the search space is infinite in
 nature.  Whereas traditional depth-first search can possibly fail in infinite
 search spaces (more precisely it will continue forever), adding a maximum depth
-alleviates this issue.\cite{norvig}
+alleviates this issue.\cite{norvig} We can ensure that this never happens by
+introducing a limit $\ell$.  The interplay between $\ell$ and $d$ becomes
+important because it affects the properties of the Depth-limited search.  For
+instance, if $\ell < d$ then the search is incomplete (i.e., a solution exists
+but the search will exhaust the available search space without finding that
+solution). If $\ell > d$ then the search is non-optimal (i.e., it may return a
+solution at a depth greater than $d$).\cite{norvig}  In the most unlikely of
+circumstances where $\ell = d$, then the algorithm is obviously optimal.
+Depth-limited search is useful when the path to a given solution has a known
+maximum.  We exploit this knowledge in the second chapter of this paper where
+we evaluate different strategies on solving a Rubik's cube.  It has been
+mathematically shown that the maximum path to a solution is 20, so we can set
+$\ell$ to 20 because we know that any Rubik's cube can be solved in 20 moves or
+less.\cite{god20}
+
+\subsection{Iterative deepening depth-first search}
+Iterative deepening depth first search looks to take the depth-limited search
+and ensure that it performs optimally. It accomplishes this task by dynamically
+iterating the depth to which the depth-limited search will execute as the
+search at any given depth is exhausted. At any given depth, if a goal state
+is not found, then $\ell$ is incremented by one.  Presumably, at some point,
+$\ell$ will equal $d$ and we will find our optimal solution.\cite{norvig} While
+some time and space is wasted generating states from previous iterations, this
+additional time and space is minuscule.  Because the majority of the nodes for
+a given tree exist at the greatest depth, the relative cost to regenerate any
+previous level decreases as the branching factor increases.\cite{norvig} For
+many problems where the depth of the solution is not known and the search space
+is incredibly large, iterative deepening search is a common choice for an
+uninformed search algorithm.\cite{norvig}
+
+\subsection{Bidirectional search}
+One final uninformed search algorithm we will mention is the bidirectional
+search.  The idea behind this search is to being one search with a initial
+state and one search with the goal state and work back towards some middle
+point.  The goal test of the traditional search algorithms is traded out for a
+test that will determine whether the frontiers of the two searches intersect at
+any node.  If there is an intersection then a path has been found.\cite{norvig}
+The biggest benefit of this algorithm is that it cuts down the time complexity
+of finding a solution from $O(b^d)$ to $O(b^{d / 2})$.  This is obviously an
+incredible improvement over breadth-first search, but it comes at a price.  At
+any given time, the frontiers of the two search algorithms must be kept in
+memory so that intersection can be checked for.  This means space complexity of
+$O(b^{d / 2})$ as well, which is quite substantial. There is also the more
+practical problem of being able to generate predecessor states.  However, as
+with our Rubik's cube problem in Chapter 2, if all transformations are
+reversible then the predecessor states and the successor states are the
+same.\cite{norvig}
+
+\section{Conclusion}
+Thus concludes our overview of the characteristics of naive, uninformed
+searching.  We have seen that, in general, a more sophisticated search
+algorithm that relies on a heuristic function $h(n)$ is preferred.  However, in
+those situations where such a function is impractical or impossible to
+generate, various uninformed searches can be chosen based on the constraints of
+the problem at hand.  Different algorithms have different strengths and
+weaknesses, and we will be exploring some of those strengths and weaknesses in
+Chapter 2 of this paper.
+
+\chapter{Rubik's Cube Experiment and Data}
+
 
 \begin{thebibliography}{9}
 
@@ -289,6 +348,9 @@ alleviates this issue.\cite{norvig}
     Cambridge University Press. 2006. Web.
     Retrieved April 26, 2013, from http://planning.cs.uiuc.edu/node631.html
  
+  \bibitem{god20}
+    Fildes, Jonathan. "Rubik's Cube Quest for Speedy Solution Comes to an End."
+    \textit{BBC News}. BBC, 08 Nov. 2010. Web. 27 Apr. 2013.
 
 \end{thebibliography}
 
