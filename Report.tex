@@ -171,7 +171,7 @@ behavior of the algorithm.  It turns out, in order to implement a breadth-first
 search we can use a FIFO data structure (queue).\cite{norvig} This is possible
 by simply adding the children of a given node to a processing queue one at a
 time, and then dequeuing the next item from the process queue and doing the
-same with that item. The path to the current item must be store (for the path
+same with that item. The path to the current item must be stored (for the path
 represents the potential solution) and redundant paths to any particular state
 are ignored.\cite{norvig} A breadth-first search is a complete search, provided
 the search space is finite.  It is trivial to prove that all nodes will be
@@ -197,7 +197,7 @@ is no way to reduce the branching factor as the problem progresses).
 
 \subsection{Uniform-cost search}
 Uniform-cost search is closely related to breadth-first search.  The first
-major difference is that between the two is that, while breadth-first search
+major difference between the two is that, while breadth-first search
 expands the most \textit{shallow} node first, uniform-cost search will expand
 the node with the lowest total \textit{path cost} first.\cite{norvig} This
 requires a different ordering of the process queue.  As mentioned above,
@@ -208,7 +208,7 @@ differences between breadth-first and uniform-cost search.  The first is that,
 whereas the goal test in breadth-first search is applied before the node is
 put in the process queue, in uniform cost search the goal test is applied
 after the node is dequeued and is ready to be expanded.\cite{norvig} The reason
-for this should be clear -- we want to find the best solution, and their may
+for this should be clear -- we want to find the best solution, and there may
 be more efficient solutions that are children of nodes that have not yet been
 expanded. The other difference is that, instead of ignoring paths to already
 explored states, a check must be performed to determine which path is shorter,
