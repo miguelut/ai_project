@@ -27,7 +27,7 @@ Rubik's cube.
 
 \end{abstract}
 
-\chapter{Searching}
+\chapter{Uninformed Searching}
 A small portion of solvable problems can be modeled in computers simply by
 mapping the entire set of conditions to corresponding actions.  However, for
 some problems this mapping is impractical if not impossible given the
@@ -157,8 +157,45 @@ are generally the easiest to implement because they assume no knowledge about
 the search space or the search problem.  Generally, if a \textbf{heuristic}
 function \textit{h(n)} can be found that can reasonably estimate the path cost
 from \textit{n} then an informed search should be used.  However, sometimes such
-a function either cannot be found or does not exist.  In these cases, uninformed
-search can be used.\cite{norvig}
+a function either cannot be found, is impractical to generate, or does not 
+exist.  In these cases, uninformed search must be used.\cite{norvig}
+
+\subsection{Breadth-first search}
+Previously we mentioned visualizing the search space as a tree.  The idea of
+breadth first search is to search one level of the search tree at a time,
+exhausting the search at any given level prior to iterating to any element of
+the next level.  We also discussed that data structure would determine the 
+behavior of the algorithm.  It turns out, in order to implement a breadth-first
+search we can use a FIFO data structure (queue).\cite{norvig} This is possible
+by simply adding the children of a given node to a processing queue one at a
+time, and then dequeuing the next item from the process queue and doing the
+same with that item. The path to the current item must be store (for the path
+represents the potential solution) and redundant paths to any particular state
+are ignored.\cite{norvig} A breadth-first search is a complete search, provided
+the search space is finite.  It is trivial to prove that all nodes will be
+explored with a breadth-first algorithm.  Further, breadth-first searches are
+optimal given certain conditions -- namely that the path cost is a
+non-descending function.  The most common scenario where this is true is where
+the path cost is constant.\cite{norvig}  We will see this in the second part of
+the paper when we deal with the Rubik's cube problem. The primary drawbacks to
+breadth-first search are found in the area of complexity.  Assuming that each
+parent has \textit{b} children (this is sometimes referred to as the 
+\textbf{branching factor}), and the solution is at depth \textit{d} then the 
+time complexity is:\vspace{5 mm}
+
+\begin{math}
+  b + b^2 + ... + b^d = O(b^d) \cite{norvig}
+\end{math}
+
+\vspace{5 mm}
+
+It is easy to picture this since, on any given level, each parent node will
+spawn \textit{b} children.  On a related note, the space complexity will be
+determined by the size of the frontier.\cite{norvig} So the space complexity is
+also \begin{math} O(b^d) \end{math}.  This is a severe limitation on the
+practical applications of uninformed breadth-first searching, as it will be
+practically impossible to solve any but the smallest problems (assuming there
+is no way to reduce the branching factor as the problem progresses).
 
 \begin{thebibliography}{9}
 
