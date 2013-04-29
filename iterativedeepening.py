@@ -1,4 +1,5 @@
 from rubics import *
+from collections import deque
 import time
 
 #
@@ -13,20 +14,18 @@ def solveID(cube, depthlimit):
     return False
 
 
+
 def dfSearch(cube, seq, depth, visitedCubes):
-    #print(seq)
     if( depth == 0 and checkSolved(cube) ):
         return seq
-    elif( cube in visitedCubes ):
-        #print('visited')
-        return False
-    elif( depth > 0 ):
-        #visitedCubes.add(cube)
+    elif(  depth > 0):
+        visitedCubes.add(cube)
         for x in range(18):
             newcube = applySeq([x], cube)
-            ret = dfSearch(newcube, seq + [x], depth - 1, visitedCubes)
-            if(ret != False):
-                return ret
+            if( newcube not in visitedCubes ):
+                ret = dfSearch(newcube, seq + [x], depth - 1, set())
+                if(ret != False):
+                    return ret
         return False
     else:
         return False
@@ -39,14 +38,12 @@ def dfSearch(cube, seq, depth, visitedCubes):
 
 t1 = time.time()
 
-for i in range(10):
-    seq = genRandSeq(5)
+for i in range(5):
+    seq = genRandSeq(6)
     cube = applySeq(seq, solvedCube)
     print(seq)
-    #printCube(cube)
 
-    #ret = dfSearch(cube, [], 5)
-    ret = solveID(cube, 5)
+    ret = solveID(cube, 6)
     if( ret == False ):
         print('failed!')
         break
