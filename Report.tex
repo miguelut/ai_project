@@ -313,7 +313,23 @@ weaknesses, and we will be exploring some of those strengths and weaknesses in
 Chapter 2 of this paper.
 
 \chapter{Graph Search Experiment and Data}
+Our original intention for this part of the paper was to create a Rubik's cube
+solver that utilized different uninformed search strategies.  It turns out this
+is a pretty terrible idea since the Rubik's cube search space has a branching
+factor of 18. Accompanying the branching factor with the maximum depth of 20,
+it is easy to see that getting past a depth of 6 or 7 becomes quite a laborious
+task. As an exercise, if we are able to expand 1,000,000 nodes per second, it
+would take somewhere on the order of magnitude of 400,000,000,000 years to
+expand the entire search tree.  Of course, there are some tricks and whatnot
+using symmetry to whittle that down a bit, but it is still an unmanageable
+search tree.\newline
 
+\section{Methodology}
+Our problem consists of a search tree generated with a branching factor of
+approximately .7 and a total of 10,000 search states. The script we utilized to
+generate the test data has been included (along with all other scripts we wrote
+for this portion of the paper) have been included at the end of this paper as
+Appendix A.
 
 \begin{thebibliography}{9}
 
