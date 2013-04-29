@@ -8,8 +8,6 @@ from copy import deepcopy
 
 def solveID(cube, depthlimit):
     for d in range(1,depthlimit+1):
-        #C = deepcopy(cube)
-        #seq = dfSearch(C, [], d)
         seq = dfSearch(cube, [], d)
         if(seq != False):
             return seq
@@ -42,24 +40,22 @@ t1 = time.time()
 for i in range(1):
     cube = rubics.newSolvedCube()
 
-    seq = rubics.genRandSeq(6)
+    seq = rubics.genRandSeq(5)
     rubics.applySeq(seq, cube)
-    #rubics.printCube(cube)
-    
-    #ret = dfSearch(cube, [], 5)
-    ret = solveID(cube, 6)
+
+    ret = solveID(cube, 5)
     if( ret == False ):
         print('failed!')
-    #else:
-        #print('change seq ' + str(seq))
-        #print('soln seq ' + str(ret) )
-        #testcube = rubics.newSolvedCube()
-        #rubics.applySeq(seq, testcube)
-        #print('before')
-        #rubics.printCube(testcube)
-        #print('after')
-        #rubics.applySeq(ret, testcube)        
-        #rubics.printCube(testcube)
+    else:
+        print('change seq ' + str(seq))
+        print('soln seq ' + str(ret) )
+        testcube = rubics.newSolvedCube()
+        rubics.applySeq(seq, testcube)
+        print('before')
+        rubics.printCube(testcube)
+        print('after')
+        rubics.applySeq(ret, testcube)        
+        rubics.printCube(testcube)
 
 
 t2 = time.time()

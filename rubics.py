@@ -184,7 +184,7 @@ def L(C):
         oldfront.append(C[Front][1][0])
         oldfront.append(C[Front][2][0])
 
-        C[Front][0][0] = C[Bottom][2][2]
+        C[Front][0][0] = C[Bottom][2][2]      
         C[Front][1][0] = C[Bottom][1][2]
         C[Front][2][0] = C[Bottom][0][2]
         C[Bottom][2][2] = C[Back][0][0] # Careful here, the bottom is reflected accross vertical!
@@ -465,65 +465,24 @@ def getUndoSeq(seq):
     return [inverse(x) for x in seq[::-1]]
 
     
-def newScrambledCube():
+def newScrambledCube(s):
     Cube = newSolvedCube()
-    seq = genRandSeq(20)
+    seq = genRandSeq(s)
     applySeq(seq, Cube)
     return Cube
 
-def checkSolved(C): 
-    if(
-        C[Front][0][0] == C[Front][1][1] and
-        C[Front][0][1] == C[Front][1][1] and
-        C[Front][0][2] == C[Front][1][1] and
-        C[Front][1][0] == C[Front][1][1] and
-        C[Front][1][2] == C[Front][1][1] and
-        C[Front][2][0] == C[Front][1][1] and
-        C[Front][2][1] == C[Front][1][1] and
-        C[Front][2][2] == C[Front][1][1] and
-        C[Back][0][0] == C[Back][1][1] and
-        C[Back][0][1] == C[Back][1][1] and
-        C[Back][0][2] == C[Back][1][1] and
-        C[Back][1][0] == C[Back][1][1] and
-        C[Back][1][2] == C[Back][1][1] and
-        C[Back][2][0] == C[Back][1][1] and
-        C[Back][2][1] == C[Back][1][1] and
-        C[Back][2][2] == C[Back][1][1] and
-        C[Top][0][0] == C[Top][1][1] and
-        C[Top][0][1] == C[Top][1][1] and
-        C[Top][0][2] == C[Top][1][1] and
-        C[Top][1][0] == C[Top][1][1] and
-        C[Top][1][2] == C[Top][1][1] and
-        C[Top][2][0] == C[Top][1][1] and
-        C[Top][2][1] == C[Top][1][1] and
-        C[Top][2][2] == C[Top][1][1] and
-        C[Bottom][0][0] == C[Bottom][1][1] and
-        C[Bottom][0][1] == C[Bottom][1][1] and
-        C[Bottom][0][2] == C[Bottom][1][1] and
-        C[Bottom][1][0] == C[Bottom][1][1] and
-        C[Bottom][1][2] == C[Bottom][1][1] and
-        C[Bottom][2][2] == C[Bottom][1][1] and
-        C[Bottom][2][1] == C[Bottom][1][1] and
-        C[Bottom][2][0] == C[Bottom][1][1] and
-        C[Left][0][0] == C[Left][1][1] and
-        C[Left][0][1] == C[Left][1][1] and
-        C[Left][0][2] == C[Left][1][1] and
-        C[Left][1][0] == C[Left][1][1] and
-        C[Left][1][2] == C[Left][1][1] and
-        C[Left][2][0] == C[Left][1][1] and
-        C[Left][2][1] == C[Left][1][1] and
-        C[Left][2][2] == C[Left][1][1] and
-        C[Right][0][0] == C[Right][1][1] and
-        C[Right][0][1] == C[Right][1][1] and
-        C[Right][0][2] == C[Right][1][1] and
-        C[Right][1][0] == C[Right][1][1] and
-        C[Right][1][2] == C[Right][1][1] and
-        C[Right][2][0] == C[Right][1][1] and
-        C[Right][2][1] == C[Right][1][1] and
-        C[Right][2][2] == C[Right][1][1]
-          ):
-        return True
-    else: return False
+def checkSolved(C):
+        if( len(set(C[Front][0]) | set(C[Front][1]) | set(C[Front][2])) == 1 and
+            len(set(C[Back][0])  | set(C[Back][1])  | set(C[Back][2])) == 1 and
+            len(set(C[Top][0])   | set(C[Top][1])   | set(C[Top][2])) == 1 and
+            len(set(C[Bottom][0])| set(C[Bottom][1])| set(C[Bottom][2])) == 1 and
+            len(set(C[Left][0])  | set(C[Left][1])  | set(C[Left][2])) == 1 and
+            len(set(C[Right][0]) | set(C[Right][1]) | set(C[Right][2])) == 1
+            ):
+                return True
+        else: return False
+
+            
         
       
 
@@ -532,17 +491,23 @@ def checkSolved(C):
 #
 ##Cube = newSolvedCube()
 ##
+##import time
 ##
+##totalTime = 0
 ##sucess = True
 ##for i in range(10000):
 ##    seq = genRandSeq(100)
 ##    applySeq(seq, Cube)
 ##    applySeq(getUndoSeq(seq), Cube)
-##    if( checkSolved(Cube) != True):
+##    t1 = time.time()
+##    solved = checkSolved(Cube) 
+##    t2 = time.time()
+##    totalTime += (t2-t1)
+##    if( solved != True ):
 ##        print('failed attempt!!!')
 ##        printCube(Cube)
 ##        sucess = False
 ##        break
 ##
 ##if( sucess):
-##    print('Awesome!')
+##    print('Avg checkSolved time ' + str(totalTime/10000))
