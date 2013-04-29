@@ -161,7 +161,9 @@ a function either cannot be found, is impractical to generate, or does not
 exist.  In these cases, uninformed search must be used.\cite{norvig}
 
 \subsection{Breadth-first search}
-Previously we mentioned visualizing the search space as a tree.  The idea of
+Previously we mentioned visualizing the search space as a tree.  One advantage
+to this approach is that a tree has no loops.  So as long as you check for
+repeated states in your algorithm, you can avoid infinite loops.  The idea of
 breadth first search is to search one level of the search tree at a time,
 exhausting the search at any given level prior to iterating to any element of
 the next level.  We also discussed that data structure would determine the 
@@ -183,19 +185,75 @@ parent has \textit{b} children (this is sometimes referred to as the
 \textbf{branching factor}), and the solution is at depth \textit{d} then the 
 time complexity is:\vspace{5 mm}
 
-\begin{math}
-  b + b^2 + ... + b^d = O(b^d) \cite{norvig}
-\end{math}
-
-\vspace{5 mm}
+$b + b^2 + ... + b^d = O(b^d)$ \cite{norvig}\vspace{5 mm}
 
 It is easy to picture this since, on any given level, each parent node will
 spawn \textit{b} children.  On a related note, the space complexity will be
 determined by the size of the frontier.\cite{norvig} So the space complexity is
-also \begin{math} O(b^d) \end{math}.  This is a severe limitation on the
+also $O(b^d)$.  This is a severe limitation on the
 practical applications of uninformed breadth-first searching, as it will be
 practically impossible to solve any but the smallest problems (assuming there
 is no way to reduce the branching factor as the problem progresses).
+
+\subsection{Uniform-cost search}
+Uniform-cost search is closely related to breadth-first search.  The first
+major difference is that between the two is that, while breadth-first search
+expands the most \textit{shallow} node first, uniform-cost search will expand
+the node with the lowest total \textit{path cost} first.\cite{norvig} This
+requires a different ordering of the process queue.  As mentioned above,
+breadth-first search is optimal only in those situations where the path-cost
+function \textit{g(n)} is non-decreasing.  Uniform-cost search has the
+advantage that it is \textit{always} optimal.  There are two other subtle
+differences between breadth-first and uniform-cost search.  The first is that,
+whereas the goal test in breadth-first search is applied before the node is
+put in the process queue, in uniform cost search the goal test is applied
+after the node is dequeued and is ready to be expanded.\cite{norvig} The reason
+for this should be clear -- we want to find the best solution, and their may
+be more efficient solutions that are children of nodes that have not yet been
+expanded. The other difference is that, instead of ignoring paths to already
+explored states, a check must be performed to determine which path is shorter,
+and the node cost must be updated accordingly.\cite{norvig} Uniform-cost search
+guarantees completeness provided no infinite sequence of zero cost actions is
+encountered (i.e., the cost of each step is greater than some positive constant
+$\epsilon$).\cite{norvig}  Given that the cost of the optimal solution is $C^*$,
+the time and space complexity can be expressed as followed:\vspace{5 mm}
+
+$O(b^{1 + \lfloor C^* / \epsilon \rfloor})$\cite{norvig}\vspace{5mm}
+
+This is a direct result of the fact that uniform-cost search will explore those
+nodes that have accumulated the least cost with no regard for the number of
+steps that have been evaluated to that point.
+
+\subsection{Depth-first search}
+In contrast to the expansion policy of breadth-first search (i.e., shallowest
+node first), depth-first search always expands the \textit{deepest} node first.
+Generally, this can be implemented by replacing the FIFO queue in a 
+breadth-first search with a LIFO stack.\cite{norvig}  Again, as long as the
+state space is finite (and repeated states are avoided), depth-first search is
+a complete algorithm as it will eventually span the entire search
+space.\cite{norvig} However, depth-first search is non optimal since it returns
+the first solution it encounters without any regard to whether a less
+costly solution exists in the search space. As a consequence of this, the time
+complexity of depth first search must be given in terms of \textit{m}, the
+maximum depth of any node.  With this in mind the time complexity of depth-first
+search is $O(b^m)$, where \textit{m} can be much larger than the \textit{d} from
+breadth-first search.\cite{norvig} Where depth-first search really shines is in
+the space complexity category.  Because a stack is used as the data structure,
+the maximum number of nodes in the stack for each level is simply the branching
+factor \textit{b}.  By its nature, the algorithm guarantees that all children
+of one node are popped from the stack before any children of another node on
+the same level are added to the stack.  Therefore, the space complexity of 
+depth-first search is $O(bm)$.  It is possible to further cut down on this 
+space requirement by only partially expanding nodes.  This type of approach is
+termed \textbf{backtracking search}.\cite{norvig} 
+
+\subsection{Depth-limited Search}
+Depth limited search is exactly the same as depth-first search, but there is a
+limit on the depth to which the algorithm will traverse the search tree prior
+to giving up.  This is comes in handy when the search space is infinite in
+nature.  Whereas traditional depth-first search can possibly fail in infinite
+search spaces (more precisely it will continue forever), adding a maximum depth
+alleviates this issue.\cite{norvig}
 
 \begin{thebibliography}{9}
 
@@ -229,7 +287,7 @@ is no way to reduce the branching factor as the problem progresses).
   \bibitem{lavalle06}
     LaValle, Steven M., \textit{Planning Algorithms}.
     Cambridge University Press. 2006. Web.
-    Retrieved from http://planning.cs.uiuc.edu/node631.html
+    Retrieved April 26, 2013, from http://planning.cs.uiuc.edu/node631.html
  
 
 \end{thebibliography}
