@@ -58,27 +58,24 @@ Bottom = 5
 # Cube Initialization
 #
 
-def newSolvedCube():
-        C = list([list([list([1,1,1]),
-                        list([1,1,1]),
-                        list([1,1,1])]),
-                  list([list([2,2,2]),
-                        list([2,2,2]),
-                        list([2,2,2])]),
-                  list([list([3,3,3]),
-                        list([3,3,3]),
-                        list([3,3,3])]),
-                  list([list([4,4,4]),
-                        list([4,4,4]),
-                        list([4,4,4])]),
-                  list([list([5,5,5]),
-                        list([5,5,5]),
-                        list([5,5,5])]),
-                  list([list([6,6,6]),
-                        list([6,6,6]),
-                        list([6,6,6])])])
-
-        return C
+solvedCube =(((1,1,1),
+             (1,1,1),
+             (1,1,1)),
+        ((2,2,2),
+         (2,2,2),
+         (2,2,2)),
+        ((3,3,3),
+         (3,3,3),
+         (3,3,3)),
+        ((4,4,4),
+         (4,4,4),
+         (4,4,4)),
+        ((5,5,5),
+         (5,5,5),
+         (5,5,5)),
+        ((6,6,6),
+         (6,6,6),
+         (6,6,6)))
               
 
 
@@ -101,223 +98,140 @@ def newSolvedCube():
 #  Uppercase means turning counter-clock-wise/left/down (relative to the picture above!!!)
 
 
+#Left = 0
+#Top = 1
+#Front = 2      
+#Back = 3
+#Right = 4
+#Bottom = 5
+
 
 
 def f(C):
         # Front Face Rotation - clock-wise
-        C[Front] = [list(tup) for tup in zip(*((C[Front])[::-1])) ]
+        fro = tuple(zip(*((C[Front])[::-1])))
 
         # Edges of Other Faces
-        oldtop = C[Top][2]
+        top = (C[Top][0], C[Top][1], C[Left][2])
+        lef = (C[Left][0], C[Left][1], C[Bottom][2])
+        bot = (C[Bottom][0], C[Bottom][1], C[Right][2])
+        rit = (C[Right][0], C[Right][1], C[Top][2])
 
-        C[Top][2] = C[Left][2]
-        C[Left][2] = C[Bottom][2]
-        C[Bottom][2] = C[Right][2]
-        C[Right][2] = oldtop
+        return (lef, top, fro, C[Back], rit, bot)
 
 def F(C):
-        # Front Face Rotation - counter-clock-wise
-        C[Front] = [list(tup) for tup in list(zip(*C[Front]))[::-1] ]
+        return f(f(f(C)))
 
-        # Edges of Other Faces
-        oldtop = C[Top][2]
-
-        C[Top][2] = C[Right][2]
-        C[Right][2] = C[Bottom][2]
-        C[Bottom][2] = C[Left][2]
-        C[Left][2] = oldtop
 
 def ba(C):
         # Back Face Rotation - clock-wise
-        C[Back] = [list(tup) for tup in zip(*((C[Back])[::-1])) ]
+        bac =  tuple(zip(*((C[Back])[::-1])))
 
-        # Edges of Other Faces
-        oldtop = list(C[Top][0])
-        
-        C[Top][0] = C[Right][0]
-        C[Right][0] = C[Bottom][0]
-        C[Bottom][0] = C[Left][0]
-        C[Left][0] = oldtop
-        
+        # Edges of Other Faces        
+        top = (C[Right][0],  C[Top][1], C[Top][2])
+        rit = (C[Bottom][0],  C[Right][1], C[Right][2])
+        bot = (C[Left][0],  C[Bottom][1], C[Bottom][2])
+        lef = (C[Top][0], C[Left][1], C[Left][2])
+
+        return (lef, top, C[Front], bac, rit, bot)
 
 def BA(C):
-        # Back Face Rotation - counter-clock-wise
-        C[Back] = [list(tup) for tup in list(zip(*C[Back]))[::-1] ]
-
-        # Edges of Other Faces
-        oldtop = C[Top][0]
-        
-        C[Top][0] = C[Left][0]
-        C[Left][0] = C[Bottom][0]
-        C[Bottom][0] = C[Right][0]
-        C[Right][0] = oldtop
+        return ba(ba(ba(C)))
 
 
 def l(C):
         # Left Face Rotation - clock-wise
-        C[Left] = [list(tup) for tup in zip(*((C[Left])[::-1])) ]
 
-        oldfront = []
-        oldfront.append(C[Front][0][0])
-        oldfront.append(C[Front][1][0])
-        oldfront.append(C[Front][2][0])
+        lef =  tuple(zip(*((C[Left])[::-1])))
 
-        C[Front][0][0] = C[Top][0][0]
-        C[Front][1][0] = C[Top][1][0]
-        C[Front][2][0] = C[Top][2][0]
-        C[Top][0][0] = C[Back][0][0]
-        C[Top][1][0] = C[Back][1][0]
-        C[Top][2][0] = C[Back][2][0]
-        C[Back][2][0] = C[Bottom][0][2] # Careful here, the bottom is reflected accross vertical!
-        C[Back][1][0] = C[Bottom][1][2]
-        C[Back][0][0] = C[Bottom][2][2]
-        C[Bottom][0][2] = oldfront[2]
-        C[Bottom][1][2] = oldfront[1]
-        C[Bottom][2][2] = oldfront[0]
+
+        fro = ((C[Top][0][0], C[Front][0][1], C[Front][0][2]),
+               (C[Top][1][0], C[Front][1][1], C[Front][1][2]),
+               (C[Top][2][0], C[Front][2][1], C[Front][2][2]))
+        top = ((C[Back][0][0], C[Top][0][1], C[Top][0][2]),
+               (C[Back][1][0], C[Top][1][1], C[Top][1][2]),
+               (C[Back][2][0], C[Top][2][1], C[Top][2][2]))
+        bac = ((C[Bottom][2][2], C[Back][0][1], C[Back][0][2]),
+               (C[Bottom][1][2], C[Back][1][1], C[Back][1][2]),
+               (C[Bottom][0][2], C[Back][2][1], C[Back][2][2]))
+        bot = ((C[Bottom][0][0], C[Bottom][0][1], C[Front][2][0]),
+               (C[Bottom][1][0], C[Bottom][1][1], C[Front][1][0]),
+               (C[Bottom][2][0], C[Bottom][2][1], C[Front][0][0]))
+        
+
+        return (lef, top, fro, bac, C[Right], bot)
 
 def L(C):
-        # Left Face Rotation - counter-clock-wise
-        C[Left] = [list(tup) for tup in list(zip(*C[Left]))[::-1] ]
+        return l(l(l(C)))
 
-        oldfront = []
-        oldfront.append(C[Front][0][0])
-        oldfront.append(C[Front][1][0])
-        oldfront.append(C[Front][2][0])
-
-        C[Front][0][0] = C[Bottom][2][2]      
-        C[Front][1][0] = C[Bottom][1][2]
-        C[Front][2][0] = C[Bottom][0][2]
-        C[Bottom][2][2] = C[Back][0][0] # Careful here, the bottom is reflected accross vertical!
-        C[Bottom][1][2] = C[Back][1][0]
-        C[Bottom][0][2] = C[Back][2][0]
-        C[Back][0][0] = C[Top][0][0]
-        C[Back][1][0] = C[Top][1][0]
-        C[Back][2][0] = C[Top][2][0]
-        C[Top][0][0] = oldfront[0]
-        C[Top][1][0] = oldfront[1]
-        C[Top][2][0] = oldfront[2]
 
 def r(C):
-        # Right Face Rotation - clock-wise
-        C[Right] = [list(tup) for tup in zip(*((C[Right])[::-1])) ]
+        rit =  tuple(zip(*((C[Right])[::-1])))
 
-        oldfront = []
-        oldfront.append(C[Front][0][2])
-        oldfront.append(C[Front][1][2])
-        oldfront.append(C[Front][2][2])
 
-        C[Front][0][2] = C[Bottom][2][0]
-        C[Front][1][2] = C[Bottom][1][0]
-        C[Front][2][2] = C[Bottom][0][0]
-        C[Bottom][2][0] = C[Back][0][2] # Careful here, the bottom is reflected accross vertical!
-        C[Bottom][1][0] = C[Back][1][2]
-        C[Bottom][0][0] = C[Back][2][2]
-        C[Back][0][2] = C[Top][0][2]
-        C[Back][1][2] = C[Top][1][2]
-        C[Back][2][2] = C[Top][2][2]
-        C[Top][0][2] = oldfront[0]
-        C[Top][1][2] = oldfront[1]
-        C[Top][2][2] = oldfront[2]
+        fro = ((C[Front][0][0], C[Front][0][1], C[Bottom][2][0]),
+               (C[Front][1][0], C[Front][1][1], C[Bottom][1][0]),
+               (C[Front][2][0], C[Front][2][1], C[Bottom][0][0]))
+        top = ((C[Top][0][0], C[Top][0][1], C[Front][0][2]),
+               (C[Top][1][0], C[Top][1][1], C[Front][1][2]),
+               (C[Top][2][0], C[Top][2][1], C[Front][2][2]))
+        bac = ((C[Back][0][0], C[Back][0][1], C[Top][0][2]),
+               (C[Back][1][0], C[Back][1][1], C[Top][1][2]),
+               (C[Back][2][0], C[Back][2][1], C[Top][2][2]))
+        bot = ((C[Back][2][2], C[Bottom][0][1], C[Bottom][0][2]),
+               (C[Back][1][2], C[Bottom][1][1], C[Bottom][1][2]),
+               (C[Back][0][2], C[Bottom][2][1], C[Bottom][2][2]))
+        
+
+        return (C[Left], top, fro, bac, rit, bot)
+
 
 def R(C):
-         # Right Face Rotation - counter-clock-wise
-        C[Right] = [list(tup) for tup in list(zip(*C[Right]))[::-1] ]
-
-        oldfront = []
-        oldfront.append(C[Front][0][2])
-        oldfront.append(C[Front][1][2])
-        oldfront.append(C[Front][2][2])
-        
-        C[Front][0][2] = C[Top][0][2]
-        C[Front][1][2] = C[Top][1][2]
-        C[Front][2][2] = C[Top][2][2]
-        C[Top][0][2] = C[Back][0][2]
-        C[Top][1][2] = C[Back][1][2]
-        C[Top][2][2] = C[Back][2][2]
-        C[Back][0][2] = C[Bottom][2][0] # Careful here, the bottom is reflected accross vertical!
-        C[Back][1][2] = C[Bottom][1][0]
-        C[Back][2][2] = C[Bottom][0][0]
-        C[Bottom][0][0] = oldfront[2]
-        C[Bottom][1][0] = oldfront[1]
-        C[Bottom][2][0] = oldfront[0]
+        return r(r(r(C)))
 
 def t(C):
          # Top Face Rotation - clock-wise
-        C[Top] = [list(tup) for tup in zip(*((C[Top])[::-1])) ]
+        top =  tuple(zip(*((C[Top])[::-1])) )
 
-        oldback = list(C[Back][2])
         
-        C[Back][2][0] = C[Left][2][2]
-        C[Back][2][1] = C[Left][1][2]
-        C[Back][2][2] = C[Left][0][2]
-        C[Left][0][2] = C[Front][0][0]
-        C[Left][1][2] = C[Front][0][1]
-        C[Left][2][2] = C[Front][0][2]
-        C[Front][0][0] = C[Right][2][0]
-        C[Front][0][1] = C[Right][1][0]
-        C[Front][0][2] = C[Right][0][0]
-        C[Right][0][0] = oldback[0]
-        C[Right][1][0] = oldback[1]
-        C[Right][2][0] = oldback[2]
+        bac = (C[Back][0], C[Back][1],
+               (C[Left][2][2], C[Left][1][2], C[Left][0][2]))
+        lef = ((C[Left][0][0], C[Left][0][1], C[Front][0][0]),
+               (C[Left][1][0], C[Left][1][1], C[Front][0][1]),
+               (C[Left][2][0], C[Left][2][1], C[Front][0][2]))
+        fro = ((C[Right][2][0], C[Right][1][0], C[Right][0][0]),
+               C[Front][1], C[Front][2])
+        rit = ((C[Back][2][0], C[Right][0][1], C[Right][0][2]),
+               (C[Back][2][1], C[Right][1][1], C[Right][1][2]),
+               (C[Back][2][2], C[Right][2][1], C[Right][2][2]))
+
+        return (lef, top, fro, bac, rit, C[Bottom])
 
 def T(C):
-         # Top Face Rotation - counter-clock-wise
-        C[Top] = [list(tup) for tup in list(zip(*C[Top]))[::-1] ]
-
-        oldback = list(C[Back][2])
-        
-        C[Back][2][0] = C[Right][0][0]
-        C[Back][2][1] = C[Right][1][0]
-        C[Back][2][2] = C[Right][2][0]
-        C[Right][0][0] = C[Front][0][2]
-        C[Right][1][0] = C[Front][0][1]
-        C[Right][2][0] = C[Front][0][0]
-        C[Front][0][2] = C[Left][2][2]
-        C[Front][0][1] = C[Left][1][2]
-        C[Front][0][0] = C[Left][0][2]
-        C[Left][0][2] = oldback[2]
-        C[Left][1][2] = oldback[1]
-        C[Left][2][2] = oldback[0]
+        return t(t(t(C)))
 
 def bo(C):
          # Bottom Face Rotation - clock-wise
-        C[Bottom] = [list(tup) for tup in list(zip(*C[Bottom]))[::-1] ]  # This must be flipped!
+        bot =  tuple(zip(*((C[Bottom])[::-1])))  # This must be flipped!
  
-        oldback = list(C[Back][0])
-        
-        C[Back][0][0] = C[Left][2][0]
-        C[Back][0][1] = C[Left][1][0]
-        C[Back][0][2] = C[Left][0][0]
-        C[Left][0][0] = C[Front][2][0]
-        C[Left][1][0] = C[Front][2][1]
-        C[Left][2][0] = C[Front][2][2]
-        C[Front][2][0] = C[Right][2][2]
-        C[Front][2][1] = C[Right][1][2]
-        C[Front][2][2] = C[Right][0][2]
-        C[Right][0][2] = oldback[0]
-        C[Right][1][2] = oldback[1]
-        C[Right][2][2] = oldback[2]
+        bac = ((C[Left][2][0], C[Left][1][0], C[Left][0][0]),
+                C[Back][1], C[Back][2])
+        lef = ((C[Front][2][0], C[Left][0][1], C[Left][0][2]),
+               (C[Front][2][1], C[Left][1][1], C[Left][1][2]),
+               (C[Front][2][2], C[Left][2][1], C[Left][2][2]))
+        fro = (C[Front][0], C[Front][1],
+               (C[Right][2][2], C[Right][1][2],  C[Right][0][2]))
+        rit = ((C[Right][0][0], C[Right][0][1], C[Back][0][0]),
+               (C[Right][1][0], C[Right][1][1], C[Back][0][1]),
+               (C[Right][2][0], C[Right][2][1], C[Back][0][2]))
+
+        return (lef, C[Top], fro, bac, rit, bot)
 
 def BO(C):
-         # Top Face Rotation - counter-clock-wise
-        C[Bottom] = [list(tup) for tup in zip(*((C[Bottom])[::-1])) ] # Flipp it !! because botom is reflected
+        return bo(bo(bo(C)))
 
-        oldback = list(C[Back][0])
-        
-        C[Back][0][0] = C[Right][0][2]
-        C[Back][0][1] = C[Right][1][2]
-        C[Back][0][2] = C[Right][2][2]
-        C[Right][0][2] = C[Front][2][2]
-        C[Right][1][2] = C[Front][2][1]
-        C[Right][2][2] = C[Front][2][0]
-        C[Front][2][2] = C[Left][2][0]
-        C[Front][2][1] = C[Left][1][0]
-        C[Front][2][0] = C[Left][0][0]
-        C[Left][0][0] = oldback[2]
-        C[Left][1][0] = oldback[1]
-        C[Left][2][0] = oldback[0]
 
-        
+       
 #Centers
 # tb - Layer between top and bottom
 def tb(C):
@@ -325,84 +239,61 @@ def tb(C):
         # Rotate the layer between the top and bottom layer clock-kwise
         oldback = list(C[Back][1])
         
-        C[Back][1][0] = C[Left][2][1]
-        C[Back][1][1] = C[Left][1][1]
-        C[Back][1][2] = C[Left][0][1]
-        C[Left][0][1] = C[Front][1][0]
-        C[Left][1][1] = C[Front][1][1]
-        C[Left][2][1] = C[Front][1][2]
-        C[Front][1][0] = C[Right][2][1]
-        C[Front][1][1] = C[Right][1][1]
-        C[Front][1][2] = C[Right][0][1]
-        C[Right][0][1] = oldback[0]
-        C[Right][1][1] = oldback[1]
-        C[Right][2][1] = oldback[2]
+        bac = (C[Back][0],
+               (C[Left][2][1], C[Left][1][1], C[Left][0][1]),
+               C[Back][2])
+        lef = ((C[Left][0][0], C[Front][1][0], C[Left][0][2]),
+               (C[Left][1][0], C[Front][1][1], C[Left][1][2]),
+               (C[Left][2][0], C[Front][1][2], C[Left][2][2]))
+        fro = (C[Front][0],
+               (C[Right][2][1], C[Right][1][1], C[Right][0][1]),
+               C[Front][2])
+        rit = ((C[Right][0][0], C[Back][1][0], C[Right][0][2]),
+               (C[Right][1][0], C[Back][1][1], C[Right][1][2]),
+               (C[Right][2][0], C[Back][1][2], C[Right][2][2]))
+
+        return (lef, C[Top], fro, bac, rit, C[Bottom])
+
 
 def TB(C):
+        return tb(tb(tb(C)))
 
-        # Rotate the layer between the top and bottom layer counter-clock-kwise
-        oldback = list(C[Back][1])
-        
-        C[Back][1][0] = C[Right][0][1]
-        C[Back][1][1] = C[Right][1][1]
-        C[Back][1][2] = C[Right][2][1]
-        C[Right][0][1] = C[Front][1][2]
-        C[Right][1][1] = C[Front][1][1]
-        C[Right][2][1] = C[Front][1][0]
-        C[Front][1][0] = C[Left][0][1]
-        C[Front][1][1] = C[Left][1][1]
-        C[Front][1][2] = C[Left][2][1]
-        C[Left][0][1] = oldback[2]
-        C[Left][1][1] = oldback[1]
-        C[Left][2][1] = oldback[0]
+
 
 def fb(C):
-    oldtop = list(C[Top][1])
 
-    C[Top][1] = C[Left][1]
-    C[Left][1] = C[Bottom][1]
-    C[Bottom][1] = C[Right][1]
-    C[Right][1] = oldtop
+    top = (C[Top][0], C[Left][1], C[Top][2])
+    lef = (C[Left][0], C[Bottom][1], C[Left][2])
+    bot = (C[Bottom][0], C[Right][1], C[Bottom][2])
+    rit = (C[Right][0], C[Top][1], C[Right][2])
+
+    return (lef, top, C[Front], C[Back], rit, bot)
+
 
 def FB(C):
-    oldtop = list(C[Top][1])
+        return fb(fb(fb(C)))
 
-    C[Top][1] = C[Right][1]
-    C[Right][1] = C[Bottom][1]
-    C[Bottom][1] = C[Left][1]
-    C[Left][1] = oldtop
-    
+
+
 def lr(C):
-    oldfront = list([C[Front][0][1], C[Front][1][1], C[Front][2][1]])
+        
+    fro = ((C[Front][0][0], C[Top][0][1], C[Front][0][2]),
+           (C[Front][1][0], C[Top][1][1], C[Front][1][2]),
+           (C[Front][2][0], C[Top][2][1], C[Front][2][2]))
+    top = ((C[Top][0][0], C[Back][0][1], C[Top][0][2]),
+           (C[Top][1][0], C[Back][1][1], C[Top][1][2]),
+           (C[Top][2][0], C[Back][2][1], C[Top][2][2]))
+    bac = ((C[Back][0][0], C[Bottom][2][1], C[Back][0][2]),
+           (C[Back][1][0], C[Bottom][1][1], C[Back][1][2]),
+           (C[Back][2][0], C[Bottom][0][1], C[Back][2][2]))
+    bot = ((C[Bottom][0][0], C[Front][2][1], C[Bottom][0][2]),
+           (C[Bottom][1][0], C[Front][1][1], C[Bottom][1][2]),
+           (C[Bottom][2][0], C[Front][0][1], C[Bottom][2][2]))
 
-    C[Front][0][1] = C[Top][0][1]
-    C[Front][1][1] = C[Top][1][1]
-    C[Front][2][1] = C[Top][2][1]
-    C[Top][0][1] = C[Back][0][1]
-    C[Top][1][1] = C[Back][1][1]
-    C[Top][2][1] = C[Back][2][1]
-    C[Back][0][1] = C[Bottom][2][1]
-    C[Back][1][1] = C[Bottom][1][1]
-    C[Back][2][1] = C[Bottom][0][1]
-    C[Bottom][0][1] = oldfront[2]
-    C[Bottom][1][1] = oldfront[1]
-    C[Bottom][2][1] = oldfront[0]
+    return (C[Left], top, fro, bac, C[Right], bot)
 
 def LR(C):
-    oldfront = list([C[Front][0][1], C[Front][1][1], C[Front][2][1]])
-
-    C[Front][0][1] = C[Bottom][2][1]
-    C[Front][1][1] = C[Bottom][1][1]
-    C[Front][2][1] = C[Bottom][0][1]
-    C[Bottom][0][1] = C[Back][2][1]
-    C[Bottom][1][1] = C[Back][1][1]
-    C[Bottom][2][1] = C[Back][0][1]
-    C[Back][0][1] = C[Top][0][1]
-    C[Back][1][1] = C[Top][1][1]
-    C[Back][2][1] = C[Top][2][1]
-    C[Top][0][1] = oldfront[0]
-    C[Top][1][1] = oldfront[1]
-    C[Top][2][1] = oldfront[2]
+           return lr(lr(lr(C)))
 
 
 listOfAllOps = [f,F,ba,BA,t,T,bo,BO,l,L,r,R,lr,LR,tb,TB,fb,FB]
@@ -445,15 +336,14 @@ def printCube(C):
 
 
 def genRandSeq(length):
-    scramSeq = []
-    for x in range(length):
-        scramSeq.append(random.randrange(0,18))
-    return scramSeq
-
+        return [random.randrange(0,18) for x in range(length)]
 
 def applySeq(seq, cube):
-    for n in seq:
-        listOfAllOps[n](cube)
+        if( not seq ):
+                return cube
+        else:
+                *head, tail = seq
+                return listOfAllOps[tail](applySeq(head, cube))
 
 
 def getUndoSeq(seq):
@@ -466,10 +356,8 @@ def getUndoSeq(seq):
 
     
 def newScrambledCube(s):
-    Cube = newSolvedCube()
-    seq = genRandSeq(s)
-    applySeq(seq, Cube)
-    return Cube
+        return applySeq(genRandSeq(s), solvedCube)
+
 
 def checkSolved(C):
         if( len(set(C[Front][0]) | set(C[Front][1]) | set(C[Front][2])) == 1 and
@@ -480,32 +368,34 @@ def checkSolved(C):
             len(set(C[Right][0]) | set(C[Right][1]) | set(C[Right][2])) == 1
             ):
                 return True
-        else: return False
+        else: return
 
-            
-        
-      
+
 
 #
 # Testing
 #
-##Cube = newSolvedCube()
-##
+#Cube = newSolvedCube()
+
 ##import time
 ##
 ##totalTime = 0
 ##sucess = True
-##for i in range(10000):
+##for i in range(1000):
 ##    seq = genRandSeq(100)
-##    applySeq(seq, Cube)
-##    applySeq(getUndoSeq(seq), Cube)
+##    #print(seq)
+##    cube = applySeq(seq, solvedCube)
+##    #printCube(cube)
+##    
+##    undocube = applySeq(getUndoSeq(seq), cube)
+##    #printCube(undocube)
 ##    t1 = time.time()
-##    solved = checkSolved(Cube) 
+##    solved = checkSolved(undocube) 
 ##    t2 = time.time()
 ##    totalTime += (t2-t1)
 ##    if( solved != True ):
 ##        print('failed attempt!!!')
-##        printCube(Cube)
+##        printCube(undocube)
 ##        sucess = False
 ##        break
 ##

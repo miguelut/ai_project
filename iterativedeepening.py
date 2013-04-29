@@ -1,6 +1,5 @@
-import rubics
+from rubics import *
 import time
-from copy import deepcopy
 
 #
 # Iterative Deepening
@@ -8,23 +7,26 @@ from copy import deepcopy
 
 def solveID(cube, depthlimit):
     for d in range(1,depthlimit+1):
-        seq = dfSearch(cube, [], d)
+        seq = dfSearch(cube, [], d, set())
         if(seq != False):
             return seq
     return False
 
 
-def dfSearch(cube, seq, depth):
-    if(rubics.checkSolved(cube) == True):
+def dfSearch(cube, seq, depth, visitedCubes):
+    #print(seq)
+    if( depth == 0 and checkSolved(cube) ):
         return seq
-    elif(depth > 0):
-        ret = False
+    elif( cube in visitedCubes ):
+        #print('visited')
+        return False
+    elif( depth > 0 ):
+        #visitedCubes.add(cube)
         for x in range(18):
-            rubics.applySeq([x], cube)
-            ret = dfSearch(cube, seq + [x], depth - 1)
+            newcube = applySeq([x], cube)
+            ret = dfSearch(newcube, seq + [x], depth - 1, visitedCubes)
             if(ret != False):
                 return ret
-            rubics.applySeq(rubics.getUndoSeq([x]), cube)
         return False
     else:
         return False
@@ -37,25 +39,25 @@ def dfSearch(cube, seq, depth):
 
 t1 = time.time()
 
-for i in range(1):
-    cube = rubics.newSolvedCube()
+for i in range(10):
+    seq = genRandSeq(5)
+    cube = applySeq(seq, solvedCube)
+    print(seq)
+    #printCube(cube)
 
-    seq = rubics.genRandSeq(5)
-    rubics.applySeq(seq, cube)
-
+    #ret = dfSearch(cube, [], 5)
     ret = solveID(cube, 5)
     if( ret == False ):
         print('failed!')
+        break
     else:
-        print('change seq ' + str(seq))
+#        print('change seq ' + str(seq))
         print('soln seq ' + str(ret) )
-        testcube = rubics.newSolvedCube()
-        rubics.applySeq(seq, testcube)
         print('before')
-        rubics.printCube(testcube)
+        printCube(cube)
         print('after')
-        rubics.applySeq(ret, testcube)        
-        rubics.printCube(testcube)
+        testcube = applySeq(ret, cube)        
+        printCube(testcube)
 
 
 t2 = time.time()
