@@ -325,14 +325,38 @@ using symmetry to whittle that down a bit, but it is still an unmanageable
 search tree.\newline
 
 \section{Methodology}
-Our problem consists of a search tree generated with a branching factor of
-approximately .7 and a total of 10,000 search states. The script we utilized to
-generate the test data has been included (along with all other scripts we wrote
-for this portion of the paper) have been included at the end of this paper as
-Appendix A.  We generated 50 files with different, random graphs and utilized
-the above algorithms to find paths from node 0 to node 9999.  Ideally, we will
-see that the breadth-first search yields the optimal solution, and each of the
-remaining algorithms will display characteristics in accordance with Chapter 1.
+Our problem consists of a search tree generated with a very low branching
+factor of approximately .07 and a total of 10,000 search states. The script we
+utilized to generate the test data has been included (along with all other
+scripts we wrote for this portion of the paper) have been included along with
+the submission of this paper.  We generated 50 files with different, random
+graphs and utilized the above algorithms to find paths from node 0 to node
+9999.  Ideally, we will see that the breadth-first search yields the optimal
+solution, and each of the remaining algorithms will display characteristics in
+accordance with Chapter 1.
+
+\section{Technical Details}
+As mentioned previously, we intended to create a Rubik's cube solver as our
+project, but quickly realized that if we wanted to review the uninformed
+searches this would be impossible (generally, Rubik's cube solvers rely on good
+heuristic functions, and therefore must be solved with informed search).
+Therefore, we invented a "toy" problem to illustrate the differences between
+the uninformed search algorithms. We chose to use Python as our programming
+language because it incorporates functional, imperative, and object-oriented
+paradigms.  For the searches, generally, we represented the nodes with a very
+basic class which had the node id number and a list of successors and
+predecessors for each node.  The nodes were stored in a dictionary structure
+indexed by the node id.  We built the graph dynamically from the data files we
+generated with our generation script.  We decided to use trivial graph format
+for the file as the string and list functions offered by Python make creating
+the nodes quite trivial. Our test script executed the searches sequentially
+on the 50 test cases and we condensed the results into some more useful forms.
+One issue we ran into involved the depth-limited and iterative deepening
+searches.  We realized during implementation that we did not need to keep
+track of the visited nodes because we only cared about the nodes in the current
+path.  This lead to some more concise code in those two algorithms, though
+it also meant we had to convert a list to a set for each path popped from
+the stack.
 
 \section{The Results}
 Below is a table summarizing the relative average path lengths of the 50
@@ -412,8 +436,6 @@ complexity.  However, it did not outperform the iterative deepening.  We chalk
 this up to inefficient use of data structures (e.g., several conversions from
 lists to sets that may have been avoided by more skilled programmer).  However,
 that being said, it did outperform the breadth first search by a decent margin.
-
-\section{Struggles}
 
 \begin{thebibliography}{9}
 
