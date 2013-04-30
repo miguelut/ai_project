@@ -18,6 +18,7 @@ def bfSearch(cube):
             else:
                 if( newcube not in visitedCubes ):
                     visitedCubes.add(newcube)
+                    print(visitedCubes)
                     seqQue.extend([seq + [x] for x in range(18)])
 
 
@@ -25,7 +26,7 @@ def bfSearch(cube):
 t1 = time.time()
 
 for x in range(1):
-    seq = genRandSeq(6)
+    seq = genRandSeq(1)
     cube = applySeq(seq, solvedCube)
     print(seq)
 
