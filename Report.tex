@@ -482,7 +482,15 @@ than the time spent on the other algorithms.\newline
 algorithm, as demonstrated by setting $\ell$ to 7 when $d$ is clearly 9.
 
 \section{Conclusions}
-With the above we have demonstrated that 
+With the above we have demonstrated that in situations where the search space is
+of limited size, uninformed search can be a practical solution.  We encountered
+a problem with space complexity in our experiment, but were never able to hit
+the time complexity wall.  However, it is easy to see that going one or two more
+levels with a branching factor of 7 would greatly increase our execution time.
+Further, some problems are completely impractical, if not impossible, to compute
+using these uninformed searches -- the Rubik's cube being a perfect example.  In
+these cases, we need a good estimation function $h(n)$ to compute the value of
+each search state in order to have any hope of completing the search.
 
 
 \begin{thebibliography}{9}
