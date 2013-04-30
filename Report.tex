@@ -325,11 +325,118 @@ using symmetry to whittle that down a bit, but it is still an unmanageable
 search tree.\newline
 
 \section{Methodology}
-Our problem consists of a search tree generated with a branching factor of
-approximately .7 and a total of 10,000 search states. The script we utilized to
-generate the test data has been included (along with all other scripts we wrote
-for this portion of the paper) have been included at the end of this paper as
-Appendix A.
+Our problem consists of a search tree generated with a very low branching
+factor of approximately .07 and a total of 10,000 search states. The script we
+utilized to generate the test data has been included (along with all other
+scripts we wrote for this portion of the paper) have been included along with
+the submission of this paper.  We generated 50 files with different, random
+graphs and utilized the above algorithms to find paths from node 0 to node
+9999.  Ideally, we will see that the breadth-first search yields the optimal
+solution, and each of the remaining algorithms will display characteristics in
+accordance with Chapter 1.
+
+\section{Technical Details}
+As mentioned previously, we intended to create a Rubik's cube solver as our
+project, but quickly realized that if we wanted to review the uninformed
+searches this would be impossible (generally, Rubik's cube solvers rely on good
+heuristic functions, and therefore must be solved with informed search).
+Therefore, we invented a "toy" problem to illustrate the differences between
+the uninformed search algorithms. We chose to use Python as our programming
+language because it incorporates functional, imperative, and object-oriented
+paradigms.  For the searches, generally, we represented the nodes with a very
+basic class which had the node id number and a list of successors and
+predecessors for each node.  The nodes were stored in a dictionary structure
+indexed by the node id.  We built the graph dynamically from the data files we
+generated with our generation script.  We decided to use trivial graph format
+for the file as the string and list functions offered by Python make creating
+the nodes quite trivial. Our test script executed the searches sequentially
+on the 50 test cases and we condensed the results into some more useful forms.
+One issue we ran into involved the depth-limited and iterative deepening
+searches.  We realized during implementation that we did not need to keep
+track of the visited nodes because we only cared about the nodes in the current
+path.  This lead to some more concise code in those two algorithms, though
+it also meant we had to convert a list to a set for each path popped from
+the stack.
+
+\section{The Results}
+Below is a table summarizing the relative average path lengths of the 50
+trials as well as the average execution time:\vspace{5 mm}
+
+\begin{tabular}{ | l | r | r | }
+  \hline
+  Algorithm & Avg. Cost & Avg. Time (s) \\ \hline
+  Breadth-First & 6.04 & 0.02462976 \\
+  Depth-First & 1451.24 & 0.37136162 \\
+  Depth-Limited & 6.84 & 0.01619128 \\
+  Iterative Deepening & 6.04 & 0.02395116 \\
+  Bidirectional & 6.96 & 0.01949264 \\
+  \hline
+\end{tabular}
+\vspace{5 mm}
+
+As an aside, for these searches we assume that the path cost is constant at 1
+unit per transition, so there was no need for us to implement a uniform cost
+search.  Somewhat surprisingly, these results are generally what one would
+expect. For instance, we expect the breadth-first search to have the lowest
+cost for every graph, and therefore the lowest average cost.  This is supported
+by the data in the table, as well as the raw data. We also expect that the
+iterative deepening search will have the exact same cost as the breadth-first
+search in every instance.  This is also supported by the data.  Both
+breadth-first search and iterative deepening search are optimal, so they should
+always generate the "best" solution (i.e., the lowest path cost). Below is a
+sampling of the raw data from both the breadth-first and iterative deepening
+searches.  While the paths generated were not always identical (not shown), the
+length of those paths always corresponded.\vspace{5 mm}
+
+\begin{tabular}{ | l | r | r | l | }
+  \hline
+  Iteration & Breadth First & Depth First & Equal \\ \hline
+  0 & 6 & 6 & TRUE \\
+  1 & 7 & 6 & TRUE \\
+  2 & 7 & 7 & TRUE \\
+  3 & 6 & 6 & TRUE \\
+  4 & 7 & 7 & TRUE \\
+  5 & 5 & 5 & TRUE \\
+  6 & 7 & 7 & TRUE \\
+  7 & 6 & 6 & TRUE \\
+  8 & 6 & 6 & TRUE \\
+  9 & 6 & 6 & TRUE \\
+  \hline
+\end{tabular}
+\vspace{5 mm}
+
+The above pattern continues for all 50 test cases. Similarly, if we compare the
+execution times of the two algorithms they are nearly identical, which is 
+evidence of what we said earlier about re-expanding nodes from a previous
+level.  Indeed, our branching factor is less than 1, so it's not surprising
+that the iterative deepening search performed slightly \textit{better} than the
+breadth-first search.\newline
+\indent The next interesting thing to note is the average cost of the
+depth-first search is enormous compared to the other searches.  This is to be
+expected with the properties of our graph.  There are many many nodes, and not
+very many edges, so some quite lengthy paths are bound to exist.  Further,
+since depth-first search returns the \textit{first} successful path, it is most
+likely not going to be the optimal path.  Obviously $m$ for any given graph is
+likely to be quite large given the parameters with which we set up our search
+space.  This is reflected in the relatively long paths generated as well as the
+long execution times.\newline 
+\indent For our depth-limited search we set the depth limit to 7.  Somewhat
+coincidentally and a bit unluckily, only one optimal path exceeded length 7
+(i.e., $\ell < d$ in trial 31), so we only illustrated the "incomplete"
+attribute of a depth-limited search on one occasion. However, many times when
+the optimal path was 5 or 6 the depth-limited search would generate a solution
+of length 7.  So this illustrates that depth-limited search is not optimal when
+$\ell > d$. We can see that depth-limited search is optimal when $\ell = d$ by
+looking at the iterative deepening search, which we discussed
+previously.\newline 
+\indent The bidirectional search also behaved as expected with the exception
+that it executed slightly more slowly that the iterative deepening search. We
+expected it to outperform all the searches with an $O(b^{d / 2})$ time
+complexity.  However, it did not outperform the iterative deepening.  We chalk
+this up to inefficient use of data structures (e.g., several conversions from
+lists to sets that may have been avoided by a more skilled programmer).
+However, that being said, it did outperform the breadth first search by a
+decent margin.
 
 \begin{thebibliography}{9}
 

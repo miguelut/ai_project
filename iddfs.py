@@ -9,14 +9,13 @@ def iddfs(nodes,start, goal):
   while(limit <= max_lim):
     stack = []
     paths = []
-    visited = set()
     stack.append(nodes[start])
     paths.append([nodes[start]])
 
     while not len(stack) == 0:
       node = stack.pop()
       path = paths.pop()
-      visited.add(node)
+      visited = set(path)
       if str(node.num) == goal:
         return path
       elif (len(path) < limit):

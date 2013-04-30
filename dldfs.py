@@ -23,5 +23,3 @@ def dldfs(nodes,start, goal):
         if n not in visited:
           stack.append(n)
           paths.append(path + [n])
-
-
