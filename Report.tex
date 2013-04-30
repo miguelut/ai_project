@@ -21,7 +21,8 @@ problems such as the Wolf-Goat-Cabbage problem and the Missionaries and
 Cannibals problem, this paper will discuss some of the characteristics of
 problems that could potentially lead to use of uninformed searching in real
 world scenarios.  The paper will then analyze some of the different search
-algorithms as they relate to solving a Rubik's cube.
+algorithms as they relate to solving a graph search problem we created for
+testing purposes.
 
 \textbf{Don't forget to add your conclusions!}
 
@@ -48,11 +49,11 @@ employing a searching agent to solve the problem.\cite{shun}
 If we think about it there are some fairly obvious things we need to know
 before we attempt to solve a problem.  For instance, we definitely need to be
 able to check if we've actually solved it.  Also, we will presumably need a
-place to start, or an initial state. Further, we need a set of actions our 
-agent can take along with transition model that will give us a new state after
-we have taken an action.  The final, less obvious thing we need is a path cost.
-\cite{norvig}  More concisely, a well-defined problem consists of these
-five items:
+place to start, or an initial state. Further, we need a set of actions our
+agent can take along with a transition model that will return a successor state
+to us after our agent has taken an action.  The final, less obvious thing we
+need is a path cost.  \cite{norvig}  More concisely, a well-defined problem
+consists of these five items:
 
 \begin{itemize}
 \item An \textbf{initial state}.
@@ -179,7 +180,7 @@ explored with a breadth-first algorithm.  Further, breadth-first searches are
 optimal given certain conditions -- namely that the path cost is a
 non-descending function.  The most common scenario where this is true is where
 the path cost is constant.\cite{norvig}  We will see this in the second part of
-the paper when we deal with the Rubik's cube problem. The primary drawbacks to
+the paper when we deal with the graph search problem. The primary drawbacks to
 breadth-first search are found in the area of complexity.  Assuming that each
 parent has $b$ children (this is sometimes referred to as the 
 \textbf{branching factor}), and the solution is at depth $d$ then the 
@@ -262,11 +263,10 @@ solution). If $\ell > d$ then the search is non-optimal (i.e., it may return a
 solution at a depth greater than $d$).\cite{norvig}  In the most unlikely of
 circumstances where $\ell = d$, then the algorithm is obviously optimal.
 Depth-limited search is useful when the path to a given solution has a known
-maximum.  We exploit this knowledge in the second chapter of this paper where
-we evaluate different strategies on solving a Rubik's cube.  It has been
-mathematically shown that the maximum path to a solution is 20, so we can set
-$\ell$ to 20 because we know that any Rubik's cube can be solved in 20 moves or
-less.\cite{god20}
+maximum depth. This type of information can be use, for example, to solve a
+Rubik's cube, since it has been mathematically shown that the maximum path to a
+solution is 20, so we can set $\ell$ to 20 because we know that any Rubik's
+cube can be solved in 20 moves or less.\cite{god20}
 
 \subsection{Iterative deepening depth-first search}
 Iterative deepening depth first search looks to take the depth-limited search
@@ -296,10 +296,11 @@ incredible improvement over breadth-first search, but it comes at a price.  At
 any given time, the frontiers of the two search algorithms must be kept in
 memory so that intersection can be checked for.  This means space complexity of
 $O(b^{d / 2})$ as well, which is quite substantial. There is also the more
-practical problem of being able to generate predecessor states.  However, as
-with our Rubik's cube problem in Chapter 2, if all transformations are
-reversible then the predecessor states and the successor states are the
-same.\cite{norvig}
+practical problem of being able to generate predecessor states.  However, in
+some problems, all transformations are reversible (e.g., solving a Rubik's
+cube).  When this is the case, generating the predecessors is the same as
+generating the successors.\cite{norvig} We will use a bidirectional search on
+our problem in Chapter 2.
 
 \section{Conclusion}
 Thus concludes our overview of the characteristics of naive, uninformed
@@ -311,8 +312,24 @@ the problem at hand.  Different algorithms have different strengths and
 weaknesses, and we will be exploring some of those strengths and weaknesses in
 Chapter 2 of this paper.
 
-\chapter{Rubik's Cube Experiment and Data}
+\chapter{Graph Search Experiment and Data}
+Our original intention for this part of the paper was to create a Rubik's cube
+solver that utilized different uninformed search strategies.  It turns out this
+is a pretty terrible idea since the Rubik's cube search space has a branching
+factor of 18. Accompanying the branching factor with the maximum depth of 20,
+it is easy to see that getting past a depth of 6 or 7 becomes quite a laborious
+task. As an exercise, if we are able to expand 1,000,000 nodes per second, it
+would take somewhere on the order of magnitude of 400,000,000,000 years to
+expand the entire search tree.  Of course, there are some tricks and whatnot
+using symmetry to whittle that down a bit, but it is still an unmanageable
+search tree.\newline
 
+\section{Methodology}
+Our problem consists of a search tree generated with a branching factor of
+approximately .7 and a total of 10,000 search states. The script we utilized to
+generate the test data has been included (along with all other scripts we wrote
+for this portion of the paper) have been included at the end of this paper as
+Appendix A.
 
 \begin{thebibliography}{9}
 

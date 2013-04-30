@@ -6,31 +6,33 @@ import time
 # Iterative Deepening
 #
 
+visited = set()
+
 def solveID(cube, depthlimit):
-    for d in range(1,depthlimit+1):
-        seq = dfSearch(cube, [], d, set())
-        if(seq != False):
-            return seq
+  for d in range(1,depthlimit+1):
+    visited.clear()
+    seq = dfSearch(cube, [], d)
+    if(seq != False):
+      return seq
+  return False
+
+
+
+def dfSearch(cube, seq, depth):
+  if(cube in visited):
     return False
-
-
-
-def dfSearch(cube, seq, depth, visitedCubes):
-    if( depth == 0 and checkSolved(cube) ):
-        return seq
-    elif(  depth > 0):
-        visitedCubes.add(cube)
-        for x in range(18):
-            newcube = applySeq([x], cube)
-            if( newcube not in visitedCubes ):
-                ret = dfSearch(newcube, seq + [x], depth - 1, set())
-                if(ret != False):
-                    return ret
-        return False
-    else:
-        return False
-
-
+  elif(checkSolved(cube)):
+    return seq
+  elif(depth == 0):
+    return False
+  else:
+    visited.add(cube)
+    for x in range(18):
+      newcube = applySeq([x], cube)
+      ret = dfSearch(newcube, seq + [x], depth - 1)
+      if(ret != False):
+        return ret
+    return False
 
 #
 # Testing
@@ -38,15 +40,15 @@ def dfSearch(cube, seq, depth, visitedCubes):
 
 t1 = time.time()
 
-for i in range(5):
-    seq = genRandSeq(6)
+for i in range(1):
+    seq = genRandSeq(4)
     cube = applySeq(seq, solvedCube)
     print(seq)
 
-    ret = solveID(cube, 6)
+    ret = solveID(cube, 4)
     if( ret == False ):
         print('failed!')
-        break
+        exit()
     else:
 #        print('change seq ' + str(seq))
         print('soln seq ' + str(ret) )
