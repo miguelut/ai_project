@@ -325,22 +325,29 @@ using symmetry to whittle that down a bit, but it is still an unmanageable
 search tree.\newline
 
 \section{Methodology}
-Our problem consists of a search tree generated with a very low branching
-factor of approximately .07 and a total of 10,000 search states. The script we
-utilized to generate the test data has been included (along with all other
-scripts we wrote for this portion of the paper) have been included along with
-the submission of this paper.  We generated 50 files with different, random
-graphs and utilized the above algorithms to find paths from node 0 to node
-9999.  Ideally, we will see that the breadth-first search yields the optimal
-solution, and each of the remaining algorithms will display characteristics in
-accordance with Chapter 1.
+We tackled this problem in two different ways.  First, we generated 50 random
+graphs with a very small branching factor.  Secondly, we generated a tree with
+branching factor 7 and a few key loops to earlier levels in the tree.  Through
+these 51 test cases we were able to observe the key differences between the
+algorithms mentioned in Chapter 1.  We generated the graph search with a very
+low branching factor of approximately 7 and a total of 10,000 search states.
+The script we utilized to generate the test data has been included (along with
+all other scripts we wrote for this portion of the paper)
+along with the submission of this paper.  We generated 50 files with different,
+random graphs and utilized the above algorithms to find paths from node 0 to
+node 9999.  Ideally, we will see that the breadth-first search yields the
+optimal solution, and each of the remaining algorithms will display
+characteristics in accordance with Chapter 1. The search tree we generated was
+more calculated. We created 1,000,000 nodes and had a branching factor of
+almost exactly seven.  However we engineered the tree by adding some additional
+edges to display the non-optimality and incompleteness of some of the searches.
 
 \section{Technical Details}
 As mentioned previously, we intended to create a Rubik's cube solver as our
 project, but quickly realized that if we wanted to review the uninformed
 searches this would be impossible (generally, Rubik's cube solvers rely on good
 heuristic functions, and therefore must be solved with informed search).
-Therefore, we invented a "toy" problem to illustrate the differences between
+Therefore, we invented two toy problems to illustrate the differences between
 the uninformed search algorithms. We chose to use Python as our programming
 language because it incorporates functional, imperative, and object-oriented
 paradigms.  For the searches, generally, we represented the nodes with a very
@@ -349,18 +356,21 @@ predecessors for each node.  The nodes were stored in a dictionary structure
 indexed by the node id.  We built the graph dynamically from the data files we
 generated with our generation script.  We decided to use trivial graph format
 for the file as the string and list functions offered by Python make creating
-the nodes quite trivial. Our test script executed the searches sequentially
-on the 50 test cases and we condensed the results into some more useful forms.
-One issue we ran into involved the depth-limited and iterative deepening
-searches.  We realized during implementation that we did not need to keep
-track of the visited nodes because we only cared about the nodes in the current
-path.  This lead to some more concise code in those two algorithms, though
-it also meant we had to convert a list to a set for each path popped from
-the stack.
+the nodes quite trivial. Our test script executed the searches sequentially on
+the 50 graph test cases and we condensed the results into some more useful
+forms. The tree test cases we ran manually (since we only had to run it twice)
+and made alterations to the depth limit of the depth limited search in order to
+illustrate the incompleteness of the algorithm.  One issue we ran into involved
+the depth-limited and iterative deepening searches.  We realized during
+implementation that we did not need to keep track of the visited nodes because
+we only cared about the nodes in the current path.  This lead to some more
+concise code in those two algorithms, though it also meant we had to convert a
+list to a set for each path popped from the stack.
 
 \section{The Results}
+\subsection{Graph Search}
 Below is a table summarizing the relative average path lengths of the 50
-trials as well as the average execution time:\vspace{5 mm}
+graph trials as well as the average execution time:\vspace{5 mm}
 
 \begin{tabular}{ | l | r | r | }
   \hline
@@ -408,9 +418,7 @@ length of those paths always corresponded.\vspace{5 mm}
 The above pattern continues for all 50 test cases. Similarly, if we compare the
 execution times of the two algorithms they are nearly identical, which is 
 evidence of what we said earlier about re-expanding nodes from a previous
-level.  Indeed, our branching factor is less than 1, so it's not surprising
-that the iterative deepening search performed slightly \textit{better} than the
-breadth-first search.\newline
+level.\newline
 \indent The next interesting thing to note is the average cost of the
 depth-first search is enormous compared to the other searches.  This is to be
 expected with the properties of our graph.  There are many many nodes, and not
@@ -437,6 +445,45 @@ this up to inefficient use of data structures (e.g., several conversions from
 lists to sets that may have been avoided by a more skilled programmer).
 However, that being said, it did outperform the breadth first search by a
 decent margin.
+
+\subsection{Tree Search}
+We see much of the same in the tree search.  The table below summarizes the
+data we collected from the two trials we ran on the tree with branching factor
+7.\vspace{5 mm}
+
+\begin{tabular}{ | l | r | r | l | }
+  \hline
+  Algorithm & Cost & Time (s) & Limit \\ \hline
+  Breadth-First & 9 & 653.414575 & \\
+  Depth-First & 15 & 0.552764 & \\
+  Depth-Limited & None & 0.263923 &  7 \\
+  Depth-Limited & 9 & 2.322558 & 13 \\
+  Iterative Deepening & 9 & 4.185726 & \\
+  Bidirectional & 9 & 0.000085 & \\
+  \hline
+\end{tabular}
+\vspace{5 mm}
+
+The thing that immediately stands out from the tree search is the massive
+increase in time it took breadth-first search to complete the task. We realized
+that this is an artifact of the memory limitations on the machine we were
+working on.  The space complexity of breadth first search is much larger than
+any of the other searches we utilized, so the increase in time is due to paging
+when memory ran out.  However, even with this completely inefficient use of
+space, the algorithm maintained it's optimality.\newline
+\indent The other striking aspect of this data is the margin by which
+bidirectional search outperformed the rest of the searches. Clearly, the paging
+occurs sometime after the depth reaches 5 since the bidirectional search (which
+is basically just a breadth-first search in two directions) did not suffer from
+the same performance degradation as the breadth-first search.  It is easy to see
+that the time spend executing the bidirectional search is exponentially faster
+than the time spent on the other algorithms.\newline
+\indent Once again we see that when $\ell < d$ we end up with an incomplete
+algorithm, as demonstrated by setting $\ell$ to 7 when $d$ is clearly 9.
+
+\section{Conclusions}
+With the above we have demonstrated that 
+
 
 \begin{thebibliography}{9}
 
