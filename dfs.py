@@ -5,15 +5,13 @@ from node import Node
 def dfs(nodes,start, goal):
   stack = []
   paths = []
-  visited = set()
-
   stack.append(nodes[start])
   paths.append([nodes[start]])
 
   while not len(stack) == 0:
     node = stack.pop()
     path = paths.pop()
-    visited.add(node)
+    visited = set(path)
     if str(node.num) == goal:
       return path
     else:
