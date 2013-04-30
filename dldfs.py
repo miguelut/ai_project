@@ -3,7 +3,7 @@
 #Depth limited depth-first search
 from node import Node
 
-limit = 7
+limit = 13
 
 def dldfs(nodes,start, goal):
   stack = []

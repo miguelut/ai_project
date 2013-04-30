@@ -2,7 +2,7 @@
 
 import random
 
-size = 100000
+size = 1000000
 f = open('tree.tgf', 'w')
 b_factor = 7
 
@@ -18,6 +18,7 @@ current = 1
 
 while current < size:
   level = queue.pop(0)
+  print(level)
   for x in range(b_factor):
     if(current >= size):
       break
