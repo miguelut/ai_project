@@ -8,39 +8,36 @@ from iddfs import iddfs
 from bidir import bidir
 import time
 
-nodes = dict()
-f = open('graph.tgf', 'r')
+o = open('results.txt', 'w')
 
-line = f.readline()
-while line[0] != '#':
-  nodes[line.split()[0]] = Node(line.split()[0])
-  line = f.readline()
-
-for line in f.readlines():
-  nodes[line.split()[0]].addSucc(nodes[line.split()[1]])
-  nodes[line.split()[1]].addPred(nodes[line.split()[0]])
-
-def timeit(f, start, goal):
+def timeit(f, start, goal, k):
   t1 = time.time()
   result = f(nodes,start,goal)
   t2 = time.time()
-  print('Elapsed time %0.6f s' % (t2-t1))
   if result != None:
-    result = list(map(lambda x: x.num, result))
-  print(result)
+    result = len(result) 
+  print('%d\t%s\t%s\t%0.6f s' % (k, str(result),f.__name__,t2-t1), file=o)
+
+for k in range(50):
+  nodes = dict()
+  f = open('graph' + str(k) + '.tgf', 'r')
   
-timeit(bfs,'0','9999')
-timeit(bfs,'0','2764')
 
-timeit(dfs,'0','9999')
-timeit(dfs,'0','2764')
+  line = f.readline()
+  while line[0] != '#':
+    nodes[line.split()[0]] = Node(line.split()[0])
+    line = f.readline()
 
-timeit(dldfs,'0','9999')
-timeit(dldfs,'0','2764')
+  for line in f.readlines():
+    nodes[line.split()[0]].addSucc(nodes[line.split()[1]])
+    nodes[line.split()[1]].addPred(nodes[line.split()[0]])
 
-timeit(iddfs,'0','9999')
-timeit(iddfs,'0','2764')
+  f.close()
 
-timeit(bidir,'0','9999')
-timeit(bidir,'0','2764')
+  timeit(bfs,'0','9999',k)
+  timeit(dfs,'0','9999',k)
+  timeit(dldfs,'0','9999',k)
+  timeit(iddfs,'0','9999',k)
+  timeit(bidir,'0','9999',k)
+
 
